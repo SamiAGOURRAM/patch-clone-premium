@@ -1,7 +1,19 @@
 import { Mail, Calendar } from "lucide-react";
 import { Button } from "./ui/button";
+import { getCalApi } from "@calcom/embed-react";
 
 export const CTASection = () => {
+  const handleBookMeeting = async () => {
+    const cal = await getCalApi();
+    cal("ui", {
+      styles: { branding: { brandColor: "#000000" } },
+      hideEventTypeDetails: false,
+      layout: "month_view"
+    });
+    // Replace 'your-username/30min' with your actual Cal.com booking link
+    cal("modal", { calLink: "your-username/30min" });
+  };
+
   return (
     <>
       {/* Separator Line */}
@@ -29,6 +41,7 @@ export const CTASection = () => {
             size="lg" 
             variant="outline"
             className="border-background text-background hover:bg-background hover:text-foreground group"
+            onClick={handleBookMeeting}
           >
             <Calendar className="mr-2 h-5 w-5" />
             Book a Meeting
