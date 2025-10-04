@@ -54,20 +54,18 @@ export const TestimonialsSection = () => {
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold max-w-3xl">
               Meet the climate leaders who trust Patch to help them navigate carbon markets
             </h2>
-            <div className="flex items-center gap-2 self-start md:self-end">
-              <Button variant="outline" size="lg">
-                Meet our customers
-              </Button>
-              <div className="flex gap-2">
-                <CarouselPrevious className="relative inset-0 translate-y-0" />
-                <CarouselNext className="relative inset-0 translate-y-0" />
-              </div>
-            </div>
+            <Button variant="outline" size="lg" className="self-start md:self-end">
+              Meet our customers
+            </Button>
           </div>
         </div>
 
         {/* Carousel */}
         <Carousel className="w-full mb-12">
+          <div className="flex justify-end gap-2 mb-4">
+            <CarouselPrevious className="relative inset-0 translate-y-0" />
+            <CarouselNext className="relative inset-0 translate-y-0" />
+          </div>
           <CarouselContent className="-ml-4">
             {testimonials.map((testimonial, index) => (
               <CarouselItem key={index} className="pl-4 md:basis-[85%] lg:basis-[48%]">
