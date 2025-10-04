@@ -11,7 +11,7 @@ export const CTASection = () => {
       layout: "month_view"
     });
     // Replace 'your-username/30min' with your actual Cal.com booking link
-    cal("modal", { calLink: "your-username/30min" });
+    cal("modal", { calLink: "med-agourram-otzwlb" });
   };
 
   return (
