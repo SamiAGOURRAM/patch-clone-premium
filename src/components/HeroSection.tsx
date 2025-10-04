@@ -1,8 +1,27 @@
 import { Play } from "lucide-react";
 import { Button } from "./ui/button";
 import planetImage from "@/assets/planet-hero.jpg";
+import { useState, useEffect } from "react";
+
+const goals = [
+  "accelerate climate solutions",
+  "achieve carbon neutrality",
+  "support verified projects",
+  "measure environmental impact",
+  "build sustainable future",
+];
 
 export const HeroSection = () => {
+  const [currentGoal, setCurrentGoal] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentGoal((prev) => (prev + 1) % goals.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -34,12 +53,25 @@ export const HeroSection = () => {
             Patch helps you
           </p>
           
-          {/* Animated Pill */}
-          <div className="relative">
-            <div className="border-2 border-foreground rounded-full px-8 py-4 inline-block hover:bg-foreground hover:text-background transition-all duration-300 cursor-pointer group">
-              <span className="text-lg md:text-xl font-medium">
-                accelerate climate solutions
-              </span>
+          {/* Animated Rolling Text */}
+          <div className="relative h-16 overflow-hidden">
+            <div className="border-2 border-foreground rounded-full px-8 py-4 inline-flex items-center justify-center min-w-[400px]">
+              <div className="relative h-8 overflow-hidden">
+                {goals.map((goal, index) => (
+                  <div
+                    key={goal}
+                    className={`absolute inset-0 flex items-center justify-center text-lg md:text-xl font-medium transition-all duration-700 ease-in-out ${
+                      index === currentGoal
+                        ? "translate-y-0 opacity-100"
+                        : index === (currentGoal - 1 + goals.length) % goals.length
+                        ? "-translate-y-full opacity-0"
+                        : "translate-y-full opacity-0"
+                    }`}
+                  >
+                    {goal}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
