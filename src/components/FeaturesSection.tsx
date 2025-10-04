@@ -21,33 +21,33 @@ const features = [
 
 export const FeaturesSection = () => {
   return (
-    <section className="py-24 px-4 bg-black">
+    <section className="py-24 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 text-white">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-black">
             Why choose Patch?
           </h2>
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             The most trusted platform for businesses to take meaningful climate action
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        <div className="grid md:grid-cols-3 gap-6 mb-14">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="bg-white rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 animate-scale-in group"
+              className="bg-white rounded-3xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 animate-scale-in group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={feature.image}
                   alt={feature.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <div className="p-8">
-                <h3 className="text-xl font-semibold mb-3 text-black">{feature.title}</h3>
+              <div className="p-7">
+                <h3 className="text-lg font-semibold mb-2.5 text-black">{feature.title}</h3>
                 <p className="text-gray-600 leading-relaxed text-[15px]">
                   {feature.description}
                 </p>
@@ -59,7 +59,7 @@ export const FeaturesSection = () => {
         <div className="text-center">
           <Button
             size="lg"
-            className="bg-[#FF6B35] hover:bg-[#FF5722] text-white font-medium px-8 py-6 h-auto text-base group shadow-none border-none"
+            className="bg-[#FF6B35] hover:bg-[#FF5722] text-white font-medium px-8 py-6 h-auto text-base rounded-xl group shadow-none border-none transition-colors"
           >
             Explore the platform
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
