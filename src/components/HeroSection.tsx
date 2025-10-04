@@ -54,13 +54,13 @@ export const HeroSection = () => {
           </p>
           
           {/* Animated Rolling Text */}
-          <div className="relative h-16 overflow-hidden">
-            <div className="border-2 border-foreground rounded-full px-8 py-4 inline-flex items-center justify-center min-w-[400px]">
-              <div className="relative h-8 overflow-hidden">
+          <div className="relative">
+            <div className="border-2 border-foreground rounded-full px-8 py-4 inline-flex items-center justify-center min-w-[320px] md:min-w-[400px]">
+              <div className="relative h-8 overflow-hidden w-full">
                 {goals.map((goal, index) => (
                   <div
                     key={goal}
-                    className={`absolute inset-0 flex items-center justify-center text-lg md:text-xl font-medium transition-all duration-700 ease-in-out ${
+                    className={`absolute inset-0 flex items-center justify-center text-base md:text-lg font-medium whitespace-nowrap transition-all duration-700 ease-in-out ${
                       index === currentGoal
                         ? "translate-y-0 opacity-100"
                         : index === (currentGoal - 1 + goals.length) % goals.length
