@@ -1,23 +1,23 @@
-import { AnnouncementBanner } from "@/components/AnnouncementBanner";
-import { Navigation } from "@/components/Navigation";
-import { HeroSection } from "@/components/HeroSection";
-import { StatsSection } from "@/components/StatsSection";
-import { FeaturesSection } from "@/components/FeaturesSection";
-import { CTASection } from "@/components/CTASection";
-import { Footer } from "@/components/Footer";
+import { AuroraNavigation } from "@/components/aurora/AuroraNavigation";
+import { AuroraHero } from "@/components/aurora/AuroraHero";
+import { AboutSection } from "@/components/aurora/AboutSection";
+import { ActivitiesSection } from "@/components/aurora/ActivitiesSection";
+import { ValuesSection } from "@/components/aurora/ValuesSection";
+import { ContactSection } from "@/components/aurora/ContactSection";
+import { AuroraFooter } from "@/components/aurora/AuroraFooter";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <AnnouncementBanner />
-      <Navigation />
+      <AuroraNavigation />
       <main>
-        <HeroSection />
-        <StatsSection />
-        <FeaturesSection />
-        <CTASection />
+        <AuroraHero />
+        <AboutSection />
+        <ActivitiesSection />
+        <ValuesSection />
+        <ContactSection />
       </main>
-      <Footer />
+      <AuroraFooter />
     </div>
   );
 };
