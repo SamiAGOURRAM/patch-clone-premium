@@ -109,10 +109,10 @@ export const GuideSection = () => {
                       {item.title}
                     </h3>
                     <p
-                      className={`text-sm leading-relaxed transition-all duration-300 ${
+                      className={`text-sm leading-relaxed transition-colors duration-300 ${
                         activeIndex === index
-                          ? "text-background/80 max-h-32 opacity-100"
-                          : "text-background/30 max-h-0 opacity-0 overflow-hidden"
+                          ? "text-background"
+                          : "text-background/40"
                       }`}
                     >
                       {item.description}
