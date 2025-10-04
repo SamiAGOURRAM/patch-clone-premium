@@ -1,10 +1,14 @@
-import { ArrowRight } from "lucide-react";
+import { Mail, Calendar } from "lucide-react";
 import { Button } from "./ui/button";
 
 export const CTASection = () => {
   return (
-    <section className="py-24 px-4 bg-foreground text-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground to-primary/20" />
+    <>
+      {/* Separator Line */}
+      <div className="w-full border-t border-border"></div>
+      
+      <section className="py-24 px-4 bg-foreground text-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground to-primary/20" />
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
@@ -18,18 +22,20 @@ export const CTASection = () => {
             size="lg" 
             className="bg-background text-foreground hover:bg-background/90 group"
           >
-            Get started
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            <Mail className="mr-2 h-5 w-5" />
+            Contact Us
           </Button>
           <Button 
             size="lg" 
             variant="outline"
-            className="border-background text-background hover:bg-background hover:text-foreground"
+            className="border-background text-background hover:bg-background hover:text-foreground group"
           >
-            Explore platform
+            <Calendar className="mr-2 h-5 w-5" />
+            Book a Meeting
           </Button>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 };
