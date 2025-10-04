@@ -62,25 +62,24 @@ export const GuideSection = () => {
   };
 
   return (
-    <section className="py-24 px-4 bg-foreground">
+    <section className="py-16 px-4 bg-foreground">
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Side - Text Content */}
-          <div className="space-y-8">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background leading-tight">
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
                 Your guide to carbon credits from end to end
               </h2>
               <Button
                 variant="outline"
-                className="border-background text-background hover:bg-background hover:text-foreground transition-colors"
-                size="lg"
+                className="border-white text-white hover:bg-white hover:text-foreground transition-colors"
               >
                 Learn how Patch works
               </Button>
             </div>
 
-            <div className="space-y-6 mt-12">
+            <div className="space-y-4 mt-8">
               {guideItems.map((item, index) => (
                 <div
                   key={item.title}
@@ -88,9 +87,9 @@ export const GuideSection = () => {
                   onClick={() => handleItemClick(index)}
                 >
                   {/* Timer Bar */}
-                  <div className="h-0.5 bg-background/20 mb-4 overflow-hidden rounded-full">
+                  <div className="h-0.5 bg-white/20 mb-3 overflow-hidden rounded-full">
                     <div
-                      className="h-full bg-primary transition-all duration-100 ease-linear"
+                      className="h-full bg-white transition-all duration-100 ease-linear"
                       style={{
                         width: activeIndex === index ? `${progress}%` : "0%",
                       }}
@@ -100,10 +99,10 @@ export const GuideSection = () => {
                   {/* Content */}
                   <div className="space-y-2">
                     <h3
-                      className={`text-lg font-medium transition-colors duration-300 ${
+                      className={`text-base font-medium transition-colors duration-300 ${
                         activeIndex === index
-                          ? "text-background"
-                          : "text-background/40"
+                          ? "text-white"
+                          : "text-white/30"
                       }`}
                     >
                       {item.title}
@@ -111,8 +110,8 @@ export const GuideSection = () => {
                     <p
                       className={`text-sm leading-relaxed transition-all duration-300 ${
                         activeIndex === index
-                          ? "text-background/80 max-h-32 opacity-100"
-                          : "text-background/30 max-h-0 opacity-0 overflow-hidden"
+                          ? "text-white/70 max-h-24 opacity-100"
+                          : "text-white/20 max-h-0 opacity-0 overflow-hidden"
                       }`}
                     >
                       {item.description}
@@ -124,7 +123,7 @@ export const GuideSection = () => {
           </div>
 
           {/* Right Side - Image */}
-          <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-premium">
+          <div className="relative h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-premium">
             {guideItems.map((item, index) => (
               <div
                 key={item.title}
