@@ -62,25 +62,24 @@ export const GuideSection = () => {
   };
 
   return (
-    <section className="py-24 px-4 bg-foreground">
+    <section className="py-12 px-4 bg-foreground">
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Side - Text Content */}
-          <div className="space-y-8">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background leading-tight">
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-background leading-tight">
                 Your guide to carbon credits from end to end
               </h2>
               <Button
                 variant="outline"
                 className="border-background text-background hover:bg-background hover:text-foreground transition-colors"
-                size="lg"
               >
                 Learn how Patch works
               </Button>
             </div>
 
-            <div className="space-y-6 mt-12">
+            <div className="space-y-4 mt-8">
               {guideItems.map((item, index) => (
                 <div
                   key={item.title}
@@ -124,7 +123,7 @@ export const GuideSection = () => {
           </div>
 
           {/* Right Side - Image */}
-          <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-premium">
+          <div className="relative h-[350px] lg:h-[450px] rounded-3xl overflow-hidden shadow-premium">
             {guideItems.map((item, index) => (
               <div
                 key={item.title}
