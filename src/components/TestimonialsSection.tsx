@@ -41,39 +41,45 @@ const partnerLogos = [
 
 export const TestimonialsSection = () => {
   return (
-    <section className="py-24 px-4 bg-background">
+    <section className="py-16 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-16">
+        <div className="mb-8">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-foreground"></div>
             <span className="text-sm">Climate's rising stars</span>
           </div>
           
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold max-w-3xl">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold max-w-3xl">
               Meet the climate leaders who trust Patch to help them navigate carbon markets
             </h2>
-            <Button variant="outline" size="lg" className="self-start md:self-end">
-              Meet our customers
-            </Button>
+            <div className="flex items-center gap-2 self-start md:self-end">
+              <Button variant="outline" size="lg">
+                Meet our customers
+              </Button>
+              <div className="flex gap-2">
+                <CarouselPrevious className="relative inset-0 translate-y-0" />
+                <CarouselNext className="relative inset-0 translate-y-0" />
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Carousel */}
-        <Carousel className="w-full mb-16">
-          <CarouselContent>
+        <Carousel className="w-full mb-12">
+          <CarouselContent className="-ml-4">
             {testimonials.map((testimonial, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2">
-                <div className="p-6 h-full flex flex-col">
-                  <div className="flex-1 flex flex-col lg:flex-row gap-6">
+              <CarouselItem key={index} className="pl-4 md:basis-[85%] lg:basis-[48%]">
+                <div className="h-full flex flex-col">
+                  <div className="flex-1 flex flex-col lg:flex-row gap-4">
                     {/* Quote Section */}
-                    <div className="flex-1 flex flex-col justify-between bg-muted/30 p-8 rounded-2xl">
+                    <div className="flex-1 flex flex-col justify-between bg-muted/30 p-6 rounded-2xl">
                       <div>
-                        <div className="mb-8">
+                        <div className="mb-4">
                           <span className="text-sm font-semibold tracking-wider">{testimonial.company}</span>
                         </div>
-                        <p className="text-xl md:text-2xl mb-8 leading-relaxed">
+                        <p className="text-lg md:text-xl mb-6 leading-relaxed">
                           {testimonial.quote}
                         </p>
                       </div>
@@ -84,7 +90,7 @@ export const TestimonialsSection = () => {
                     </div>
                     
                     {/* Image Section */}
-                    <div className="lg:w-80 h-64 lg:h-auto">
+                    <div className="lg:w-64 h-56 lg:h-auto">
                       <img 
                         src={testimonial.personImage} 
                         alt={testimonial.personName}
@@ -96,14 +102,10 @@ export const TestimonialsSection = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="flex justify-end gap-2 mt-6">
-            <CarouselPrevious className="relative inset-0 translate-y-0" />
-            <CarouselNext className="relative inset-0 translate-y-0" />
-          </div>
         </Carousel>
 
         {/* Partner Logos */}
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 pt-12 border-t border-border">
+        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 pt-8 border-t border-border">
           {partnerLogos.map((logo, index) => (
             <div key={index} className="text-lg md:text-xl font-semibold text-muted-foreground/60 hover:text-foreground transition-colors">
               {logo}
