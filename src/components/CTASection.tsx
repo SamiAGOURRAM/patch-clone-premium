@@ -23,8 +23,10 @@ export const CTASection = () => {
       {/* Separator Line */}
       <div className="w-full border-t border-border"></div>
       
-      <section className="py-24 px-4 bg-foreground text-background relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground to-primary/20" />
+      <section className="py-24 px-4 bg-[#0F1C2E] text-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#165C42]/20 via-transparent to-[#165C42]/20" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#165C42]/30 to-transparent" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#165C42]/30 to-transparent" />
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
@@ -100,7 +102,7 @@ export const CTASection = () => {
           <Button 
             size="lg" 
             variant="outline"
-            className="border-background text-background hover:bg-background hover:text-foreground group"
+            className="border-background text-background hover:bg-background hover:text-[#0F1C2E]"
             onClick={handleBookMeeting}
           >
             <Calendar className="mr-2 h-5 w-5" />
