@@ -37,7 +37,7 @@ export const StatsSection = () => {
               className="text-center animate-fade-in group"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <div className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent transition-all duration-500 group-hover:scale-110`}>
+              <div className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent transition-all duration-500 group-hover:scale-110`}>
                 {stat.value}
               </div>
               <div className="text-muted-foreground text-sm md:text-base font-medium">

@@ -14,11 +14,7 @@ export const Navigation = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-primary via-success to-tertiary animate-glow flex items-center justify-center">
-              <div className="absolute inset-[2px] rounded-full bg-background" />
-              <div className="relative w-3 h-3 rounded-full bg-gradient-to-br from-primary to-success" />
-            </div>
-            <span className="text-2xl font-serif font-semibold tracking-wide">AURORA</span>
+            <span className="text-2xl font-bold tracking-wide">AURORA</span>
           </div>
 
           {/* Navigation Links */}
@@ -73,9 +69,6 @@ export const Navigation = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <Button variant="ghost" className="hidden md:inline-flex font-medium">
-              Se connecter
-            </Button>
             <Button size="lg" className="font-medium">
               Nous contacter
             </Button>

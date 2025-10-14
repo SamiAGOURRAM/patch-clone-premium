@@ -26,29 +26,18 @@ export const HeroSection = () => {
       <div className="max-w-7xl mx-auto">
         {/* Main Headline */}
         <div className="relative flex flex-col items-center justify-center text-center mb-12">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight mb-4 animate-fade-in">
-            <span className="block mb-2 bg-gradient-to-r from-secondary via-primary to-tertiary bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 animate-fade-in">
+            <span className="block mb-3 bg-gradient-to-r from-secondary via-primary to-tertiary bg-clip-text text-transparent">
               À l'aube
             </span>
-            <div className="relative inline-block">
-              {/* Aurora Glow Image */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 z-10">
-                <div className="relative w-full h-full animate-float">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-success via-primary to-tertiary shadow-premium animate-aurora-shimmer" 
-                       style={{ backgroundSize: "200% 200%" }} />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-transparent to-background/30" />
-                </div>
-              </div>
-              <span className="relative z-0 opacity-0">des connexions</span>
-            </div>
-            <span className="block mt-2">des connexions</span>
-            <span className="block text-muted-foreground text-4xl md:text-5xl lg:text-6xl mt-2">durables</span>
+            <span className="block">des connexions</span>
+            <span className="block text-muted-foreground text-4xl md:text-5xl lg:text-6xl mt-3">durables</span>
           </h1>
         </div>
 
         {/* Subtitle */}
         <div className="flex flex-col items-center gap-6 animate-scale-in" style={{ animationDelay: "0.3s" }}>
-          <p className="text-xl md:text-2xl text-muted-foreground font-serif">
+          <p className="text-xl md:text-2xl text-muted-foreground">
             AURORA vous accompagne pour
           </p>
           
