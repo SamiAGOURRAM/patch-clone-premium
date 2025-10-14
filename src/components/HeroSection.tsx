@@ -4,10 +4,31 @@ import auroraImage from "@/assets/aurora-hero-dark.jpg";
 import { useState, useEffect } from "react";
 
 const values = [
-  "Comprendre votre vision",
-  "Relier les expertises",
-  "Construire l'excellence",
-  "Préserver la cohérence",
+  {
+    method: "Méthode Écoute",
+    text: "Comprendre vos besoins et votre vision unique",
+    color: "text-primary"
+  },
+  {
+    method: "Méthode Connexion",
+    text: "Relier les expertises et créer des synergies",
+    color: "text-secondary"
+  },
+  {
+    method: "Méthode Excellence",
+    text: "Construire avec rigueur et qualité",
+    color: "text-tertiary"
+  },
+  {
+    method: "Méthode Cohérence",
+    text: "Préserver l'harmonie de vos projets",
+    color: "text-success"
+  },
+  {
+    method: "Méthode Impact",
+    text: "Maximiser la valeur et les résultats",
+    color: "text-accent"
+  }
 ];
 
 export const HeroSection = () => {
@@ -35,12 +56,16 @@ export const HeroSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Main Headline */}
         <div className="relative flex flex-col items-center justify-center text-center mb-12">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 animate-fade-in drop-shadow-2xl">
-            <span className="block mb-3 text-white">
+          <h1 className="font-bold mb-6 animate-fade-in drop-shadow-2xl">
+            <span className="block text-5xl md:text-6xl lg:text-7xl text-white/95 mb-2 tracking-wide">
               À l'aube
             </span>
-            <span className="block text-white">des connexions</span>
-            <span className="block text-white/90 text-4xl md:text-5xl lg:text-6xl mt-3">durables</span>
+            <span className="block text-6xl md:text-8xl lg:text-9xl text-white tracking-tight leading-none mb-3">
+              des connexions
+            </span>
+            <span className="block text-4xl md:text-5xl lg:text-6xl text-white/90 font-light tracking-wider">
+              durables
+            </span>
           </h1>
         </div>
 
@@ -52,12 +77,12 @@ export const HeroSection = () => {
           
           {/* Animated Rolling Values */}
           <div className="relative">
-            <div className="border-2 border-white/40 backdrop-blur-sm bg-white/10 rounded-full px-8 py-4 inline-flex items-center justify-center min-w-[320px] md:min-w-[400px] shadow-2xl hover:shadow-[0_0_40px_rgba(212,180,106,0.4)] transition-all duration-500">
-              <div className="relative h-8 overflow-hidden w-full">
+            <div className="border-2 border-white/40 backdrop-blur-sm bg-white/10 rounded-full px-8 py-6 inline-flex items-center justify-center min-w-[320px] md:min-w-[500px] shadow-2xl hover:shadow-[0_0_40px_rgba(212,180,106,0.4)] transition-all duration-500">
+              <div className="relative h-16 overflow-hidden w-full">
                 {values.map((value, index) => (
                   <div
-                    key={value}
-                    className={`absolute inset-0 flex items-center justify-center text-base md:text-lg font-medium whitespace-nowrap transition-all duration-700 ease-in-out text-white drop-shadow-lg ${
+                    key={value.method}
+                    className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${
                       index === currentValue
                         ? "translate-y-0 opacity-100"
                         : index === (currentValue - 1 + values.length) % values.length
@@ -65,7 +90,12 @@ export const HeroSection = () => {
                         : "translate-y-full opacity-0"
                     }`}
                   >
-                    {value}
+                    <div className={`text-lg md:text-xl font-bold ${value.color} drop-shadow-lg mb-1`}>
+                      {value.method}
+                    </div>
+                    <div className="text-sm md:text-base text-white/80 drop-shadow-lg">
+                      {value.text}
+                    </div>
                   </div>
                 ))}
               </div>
