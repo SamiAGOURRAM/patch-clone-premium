@@ -13,71 +13,71 @@ export const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full border-2 border-foreground flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-foreground" />
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-primary via-success to-tertiary animate-glow flex items-center justify-center">
+              <div className="absolute inset-[2px] rounded-full bg-background" />
+              <div className="relative w-3 h-3 rounded-full bg-gradient-to-br from-primary to-success" />
             </div>
-            <span className="text-xl font-bold">Patch</span>
+            <span className="text-2xl font-serif font-semibold tracking-wide">AURORA</span>
           </div>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-muted-foreground transition-colors">
-                Carbon credits
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors font-medium">
+                Nos Univers
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-popover z-50">
-                <DropdownMenuItem>Overview</DropdownMenuItem>
-                <DropdownMenuItem>Carbon removal</DropdownMenuItem>
-                <DropdownMenuItem>Carbon avoidance</DropdownMenuItem>
+                <DropdownMenuItem>Espace</DropdownMenuItem>
+                <DropdownMenuItem>Expérience</DropdownMenuItem>
+                <DropdownMenuItem>Structure</DropdownMenuItem>
+                <DropdownMenuItem>Image</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-muted-foreground transition-colors">
-                How to rebalance the planet
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors font-medium">
+                Méthode AURORA
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-popover z-50">
-                <DropdownMenuItem>Get started</DropdownMenuItem>
-                <DropdownMenuItem>Platform overview</DropdownMenuItem>
-                <DropdownMenuItem>Case studies</DropdownMenuItem>
+                <DropdownMenuItem>Observer</DropdownMenuItem>
+                <DropdownMenuItem>Orienter</DropdownMenuItem>
+                <DropdownMenuItem>Structurer</DropdownMenuItem>
+                <DropdownMenuItem>Accompagner</DropdownMenuItem>
+                <DropdownMenuItem>Préserver</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
+            <a href="#network" className="hover:text-primary transition-colors font-medium">
+              Réseau
+            </a>
+
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-muted-foreground transition-colors">
-                Resources
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors font-medium">
+                L'Âme
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-popover z-50">
-                <DropdownMenuItem>Blog</DropdownMenuItem>
-                <DropdownMenuItem>Documentation</DropdownMenuItem>
-                <DropdownMenuItem>Reports</DropdownMenuItem>
+                <DropdownMenuItem>Manifeste</DropdownMenuItem>
+                <DropdownMenuItem>Origines</DropdownMenuItem>
+                <DropdownMenuItem>Valeurs</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-muted-foreground transition-colors">
-                Company
-                <ChevronDown className="h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-popover z-50">
-                <DropdownMenuItem>About</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Careers</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <a href="#magazine" className="hover:text-primary transition-colors font-medium">
+              Les Connexions Durables
+            </a>
           </div>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <Button variant="ghost" className="hidden md:inline-flex">
-              Log in
+            <Button variant="ghost" className="hidden md:inline-flex font-medium">
+              Se connecter
             </Button>
-            <Button size="lg">
-              Get started →
+            <Button size="lg" className="font-medium">
+              Nous contacter
             </Button>
           </div>
         </div>
