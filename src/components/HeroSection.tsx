@@ -1,6 +1,6 @@
 import { Play } from "lucide-react";
 import { Button } from "./ui/button";
-import auroraImage from "@/assets/aurora-hero.jpg";
+import auroraImage from "@/assets/aurora-hero-dark.jpg";
 import { useState, useEffect } from "react";
 
 const values = [
@@ -30,7 +30,6 @@ export const HeroSection = () => {
           alt="Aurora Borealis" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 via-secondary/30 to-background" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
