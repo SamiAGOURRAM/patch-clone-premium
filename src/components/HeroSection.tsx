@@ -28,9 +28,9 @@ export const HeroSection = () => {
         <img 
           src={auroraImage} 
           alt="Aurora Borealis" 
-          className="w-full h-full object-cover animate-[scale-in_20s_ease-in-out_infinite_alternate]"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/40 via-secondary/20 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/50 via-secondary/30 to-background" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
