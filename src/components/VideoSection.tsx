@@ -1,13 +1,9 @@
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
 
-interface VideoSectionProps {
-  bgColor?: string;
-}
-
-export const VideoSection = ({ bgColor = "bg-foreground" }: VideoSectionProps) => {
+export const VideoSection = () => {
   return (
-    <section className={`py-16 px-4 transition-colors duration-1000 ${bgColor}`}>
+    <section className="py-16 px-4 bg-[#0F1C2E]">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <Button

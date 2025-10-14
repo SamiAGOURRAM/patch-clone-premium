@@ -41,12 +41,8 @@ const methodesAurora = [
 
 const TIMER_DURATION = 8000; // 8 seconds per item
 
-interface GuideSectionProps {
-  activeIndex: number;
-  setActiveIndex: (index: number) => void;
-}
-
-export const GuideSection = ({ activeIndex, setActiveIndex }: GuideSectionProps) => {
+export const GuideSection = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -59,10 +55,16 @@ export const GuideSection = ({ activeIndex, setActiveIndex }: GuideSectionProps)
       });
     }, 50);
 
+    const itemInterval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % methodesAurora.length);
+      setProgress(0);
+    }, TIMER_DURATION);
+
     return () => {
       clearInterval(progressInterval);
+      clearInterval(itemInterval);
     };
-  }, [activeIndex]);
+  }, []);
 
   const handleItemClick = (index: number) => {
     setActiveIndex(index);
@@ -70,7 +72,7 @@ export const GuideSection = ({ activeIndex, setActiveIndex }: GuideSectionProps)
   };
 
   return (
-    <section className={`py-12 px-4 transition-colors duration-1000 ${methodesAurora[activeIndex].bgColor}`}>
+    <section className="py-12 px-4 bg-[#0F1C2E]">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Side - Text Content */}
@@ -97,10 +99,9 @@ export const GuideSection = ({ activeIndex, setActiveIndex }: GuideSectionProps)
                   {/* Timer Bar */}
                   <div className="h-0.5 bg-background/20 mb-4 overflow-hidden rounded-full">
                     <div
-                      className="h-full transition-all duration-100 ease-linear"
+                      className="h-full bg-background/60 transition-all duration-100 ease-linear"
                       style={{
                         width: activeIndex === index ? `${progress}%` : "0%",
-                        backgroundColor: activeIndex === index ? item.color : "transparent",
                       }}
                     />
                   </div>
