@@ -7,7 +7,7 @@ const footerLinks = {
 
 export const Footer = () => {
   return (
-    <footer className="bg-secondary/30 py-16 px-4">
+    <footer className="bg-background py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           {/* Logo & Description */}
@@ -16,7 +16,7 @@ export const Footer = () => {
               <div className="w-8 h-8 rounded-full border-2 border-foreground flex items-center justify-center">
                 <div className="w-2 h-2 rounded-full bg-foreground" />
               </div>
-              <span className="text-xl font-bold">Patch</span>
+              <span className="text-xl font-bold">Aurora</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Accelerating climate solutions for a sustainable future.
@@ -46,7 +46,7 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2025 Patch. All rights reserved.
+            © 2025 Aurora. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
