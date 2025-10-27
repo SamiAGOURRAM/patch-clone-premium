@@ -101,8 +101,7 @@ export const CTASection = () => {
           </Dialog>
           <Button 
             size="lg" 
-            variant="outline"
-            className="border-background bg-transparent text-background hover:bg-background hover:text-[#0F1C2E]"
+            className="bg-background text-foreground hover:bg-background/90"
             onClick={handleBookMeeting}
           >
             <Calendar className="mr-2 h-5 w-5" />
