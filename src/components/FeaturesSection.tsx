@@ -31,7 +31,7 @@ export const FeaturesSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-12 animate-fade-in">
           <h2 className="text-2xl font-bold text-foreground">
-            The Patch blog
+            The Aurora blog
           </h2>
           <button className="text-foreground underline underline-offset-4 hover:text-muted-foreground transition-colors text-sm font-medium">
             See more articles
@@ -64,12 +64,6 @@ export const FeaturesSection = () => {
                     <p className="text-white/90 text-base">
                       {feature.subtitle}
                     </p>
-                  </div>
-                  
-                  {/* Logo at bottom */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-white" />
-                    <span className="text-white font-medium text-sm">Patch</span>
                   </div>
                 </div>
               </div>
