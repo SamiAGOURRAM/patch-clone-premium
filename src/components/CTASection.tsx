@@ -102,7 +102,7 @@ export const CTASection = () => {
           <Button 
             size="lg" 
             variant="outline"
-            className="border-background text-background hover:bg-background hover:text-[#0F1C2E]"
+            className="border-background bg-transparent text-background hover:bg-background hover:text-[#0F1C2E]"
             onClick={handleBookMeeting}
           >
             <Calendar className="mr-2 h-5 w-5" />
