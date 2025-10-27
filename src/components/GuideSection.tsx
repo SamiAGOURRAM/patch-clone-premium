@@ -82,8 +82,7 @@ export const GuideSection = () => {
                 Les Méthodes AURORA
               </h2>
               <Button
-                variant="outline"
-                className="border-background text-background hover:bg-background hover:text-foreground transition-colors"
+                className="bg-background text-foreground hover:bg-background/90"
               >
                 Découvrir notre approche
               </Button>
