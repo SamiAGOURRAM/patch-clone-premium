@@ -1,11 +1,54 @@
-const footerLinks = {
+import { useFooter } from "@/hooks/useSanity";
+
+// Valeurs par défaut (fallback)
+const defaultFooterLinks = {
   Product: ["Carbon credits", "Platform", "API", "Pricing"],
   Company: ["About", "Team", "Careers", "Contact"],
   Resources: ["Blog", "Documentation", "Reports", "Help center"],
   Legal: ["Privacy", "Terms", "Security", "Compliance"],
 };
 
+const defaultFooterData = {
+  logoText: "Aurora",
+  description: "Accelerating climate solutions for a sustainable future.",
+  copyright: "© 2025 Aurora. All rights reserved.",
+  socialLinks: [
+    { platform: "Twitter", url: "#" },
+    { platform: "LinkedIn", url: "#" },
+    { platform: "GitHub", url: "#" },
+  ],
+};
+
 export const Footer = () => {
+  const { data: sanityFooter } = useFooter();
+
+  // Utiliser les données Sanity ou les valeurs par défaut
+  const footerData = {
+    logoText: sanityFooter?.logoText || defaultFooterData.logoText,
+    description: sanityFooter?.description || defaultFooterData.description,
+    copyright: sanityFooter?.copyright || defaultFooterData.copyright,
+    socialLinks: sanityFooter?.socialLinks || defaultFooterData.socialLinks,
+  };
+
+  // Transformer les catégories de liens de Sanity ou utiliser les valeurs par défaut
+  const footerLinks = sanityFooter?.linkCategories 
+    ? Object.fromEntries(
+        sanityFooter.linkCategories.map(cat => [
+          cat.title, 
+          cat.links.map(l => l.label)
+        ])
+      )
+    : defaultFooterLinks;
+
+  const linkUrls = sanityFooter?.linkCategories 
+    ? Object.fromEntries(
+        sanityFooter.linkCategories.map(cat => [
+          cat.title, 
+          Object.fromEntries(cat.links.map(l => [l.label, l.href]))
+        ])
+      )
+    : null;
+
   return (
     <footer className="bg-background py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -16,10 +59,10 @@ export const Footer = () => {
               <div className="w-8 h-8 rounded-full border-2 border-foreground flex items-center justify-center">
                 <div className="w-2 h-2 rounded-full bg-foreground" />
               </div>
-              <span className="text-xl font-bold">Aurora</span>
+              <span className="text-xl font-bold">{footerData.logoText}</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Accelerating climate solutions for a sustainable future.
+              {footerData.description}
             </p>
           </div>
 
@@ -28,10 +71,10 @@ export const Footer = () => {
             <div key={category}>
               <h4 className="font-semibold mb-4">{category}</h4>
               <ul className="space-y-2">
-                {links.map((link) => (
+                {(links as string[]).map((link) => (
                   <li key={link}>
                     <a
-                      href="#"
+                      href={linkUrls?.[category]?.[link] || "#"}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link}
@@ -46,18 +89,18 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2025 Aurora. All rights reserved.
+            {footerData.copyright}
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Twitter
-            </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              LinkedIn
-            </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              GitHub
-            </a>
+            {footerData.socialLinks.map((social) => (
+              <a 
+                key={social.platform}
+                href={social.url || "#"} 
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {social.platform}
+              </a>
+            ))}
           </div>
         </div>
       </div>

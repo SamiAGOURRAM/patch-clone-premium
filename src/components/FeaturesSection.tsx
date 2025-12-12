@@ -1,13 +1,17 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
+import { useBlogPosts } from "@/hooks/useSanity";
+import { urlFor } from "@/lib/sanity";
 
-const features = [
+// Valeurs par défaut (fallback)
+const defaultFeatures = [
   {
     image: "https://images.pexels.com/photos/414837/pexels-photo-414837.jpeg?auto=compress&cs=tinysrgb&w=1200",
     title: "25,000+ projects",
     subtitle: "How Patch centralizes the voluntary carbon market",
     category: "COMPANY UPDATES",
     description: "The carbon market of the future: How Patch is creating clarity out of complexity",
+    publishedAt: new Date().toISOString(),
   },
   {
     image: "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1200",
@@ -15,6 +19,7 @@ const features = [
     subtitle: "Net-Zero Standard 2.0",
     category: "PATCH PERSPECTIVES",
     description: "SBTi Draft Corporate Net-Zero Standard 2.0: What's new and why it matters",
+    publishedAt: new Date().toISOString(),
   },
   {
     image: "https://images.pexels.com/photos/335393/pexels-photo-335393.jpeg?auto=compress&cs=tinysrgb&w=1200",
@@ -22,10 +27,25 @@ const features = [
     subtitle: "Our philosophy on integrity",
     category: "COMPANY UPDATES",
     description: "The Patch approach to trust and safety",
+    publishedAt: new Date().toISOString(),
   },
 ];
 
 export const FeaturesSection = () => {
+  const { data: sanityPosts } = useBlogPosts();
+
+  // Utiliser les données Sanity ou les valeurs par défaut
+  const features = sanityPosts && sanityPosts.length > 0 
+    ? sanityPosts.map(p => ({
+        image: p.image ? urlFor(p.image).width(1200).url() : defaultFeatures[0].image,
+        title: p.title,
+        subtitle: p.subtitle || "",
+        category: p.category,
+        description: p.description,
+        publishedAt: p.publishedAt,
+      }))
+    : defaultFeatures;
+
   return (
     <section className="py-24 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
@@ -81,7 +101,7 @@ export const FeaturesSection = () => {
               </h4>
               
               <p className="text-sm text-muted-foreground">
-                Posted on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                Posted on {new Date(feature.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
               </p>
             </article>
           ))}

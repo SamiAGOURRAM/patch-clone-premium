@@ -2,31 +2,58 @@ import { Play } from "lucide-react";
 import { Button } from "./ui/button";
 import auroraImage from "@/assets/aurora-hero-dark.jpg";
 import { useState, useEffect } from "react";
+import { useHeroContent } from "@/hooks/useSanity";
+import { urlFor } from "@/lib/sanity";
 
-const values = [
+// Valeurs par défaut (fallback si Sanity n'est pas configuré)
+const defaultValues = [
   "Comprendre votre vision",
   "Relier les expertises",
   "Construire l'excellence",
   "Préserver la cohérence",
 ];
 
+const defaultContent = {
+  mainTitle: "À l'aube",
+  subTitle: "des connexions",
+  accentText: "durables",
+  accompanyText: "AURORA vous accompagne pour",
+  ctaButtonText: "Découvrir AURORA en vidéo",
+};
+
 export const HeroSection = () => {
   const [currentValue, setCurrentValue] = useState(0);
+  const { data: heroContent } = useHeroContent();
+
+  // Utiliser les données Sanity ou les valeurs par défaut
+  const values = heroContent?.rotatingValues || defaultValues;
+  const content = {
+    mainTitle: heroContent?.mainTitle || defaultContent.mainTitle,
+    subTitle: heroContent?.subTitle || defaultContent.subTitle,
+    accentText: heroContent?.accentText || defaultContent.accentText,
+    accompanyText: heroContent?.accompanyText || defaultContent.accompanyText,
+    ctaButtonText: heroContent?.ctaButtonText || defaultContent.ctaButtonText,
+  };
+
+  // Image de fond (Sanity ou locale)
+  const backgroundImage = heroContent?.heroImage 
+    ? urlFor(heroContent.heroImage).width(1920).url() 
+    : auroraImage;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentValue((prev) => (prev + 1) % values.length);
-    }, 3500); // Change every 3.5 seconds
+    }, 3500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [values.length]);
 
   return (
     <section className="relative py-20 md:py-32 px-4 overflow-hidden min-h-[85vh] flex items-center">
       {/* Aurora Background */}
       <div className="absolute inset-0 z-0">
         <img 
-          src={auroraImage} 
+          src={backgroundImage} 
           alt="Aurora Borealis" 
           className="w-full h-full object-cover"
         />
@@ -37,17 +64,17 @@ export const HeroSection = () => {
         <div className="relative flex flex-col items-center justify-center text-center mb-12">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 animate-fade-in drop-shadow-2xl">
             <span className="block mb-3 text-white">
-              À l'aube
+              {content.mainTitle}
             </span>
-            <span className="block text-white">des connexions</span>
-            <span className="block text-white/90 text-4xl md:text-5xl lg:text-6xl mt-3">durables</span>
+            <span className="block text-white">{content.subTitle}</span>
+            <span className="block text-white/90 text-4xl md:text-5xl lg:text-6xl mt-3">{content.accentText}</span>
           </h1>
         </div>
 
         {/* Subtitle */}
         <div className="flex flex-col items-center gap-6 animate-scale-in" style={{ animationDelay: "0.3s" }}>
           <p className="text-xl md:text-2xl text-white/90 drop-shadow-lg">
-            AURORA vous accompagne pour
+            {content.accompanyText}
           </p>
           
           {/* Animated Rolling Values */}
@@ -79,7 +106,7 @@ export const HeroSection = () => {
             size="lg"
           >
             <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-            Découvrir AURORA en vidéo
+            {content.ctaButtonText}
           </Button>
         </div>
       </div>

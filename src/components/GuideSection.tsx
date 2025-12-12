@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import { useMethods } from "@/hooks/useSanity";
+import { urlFor } from "@/lib/sanity";
 
-const methodesAurora = [
+// Valeurs par défaut (fallback)
+const defaultMethodesAurora = [
   {
     title: "Méthode Conseil",
     description: "Accompagnement stratégique pour définir et aligner vos objectifs avec une vision durable et cohérente.",
@@ -44,6 +47,18 @@ const TIMER_DURATION = 8000; // 8 seconds per item
 export const GuideSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+  const { data: sanityMethods } = useMethods();
+
+  // Utiliser les données Sanity ou les valeurs par défaut
+  const methodesAurora = sanityMethods && sanityMethods.length > 0 
+    ? sanityMethods.map(m => ({
+        title: m.title,
+        description: m.description,
+        image: m.image ? urlFor(m.image).width(1200).url() : defaultMethodesAurora[0].image,
+        color: `hsl(var(--${m.color || 'primary'}))`,
+        bgColor: `bg-${m.color || 'primary'}`,
+      }))
+    : defaultMethodesAurora;
 
   useEffect(() => {
     const progressInterval = setInterval(() => {
@@ -154,5 +169,3 @@ export const GuideSection = () => {
     </section>
   );
 };
-
-export { methodesAurora };

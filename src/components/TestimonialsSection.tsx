@@ -1,7 +1,10 @@
 import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
+import { useTestimonials, usePartnerLogos } from "@/hooks/useSanity";
+import { urlFor } from "@/lib/sanity";
 
-const testimonials = [
+// Valeurs par défaut (fallback)
+const defaultTestimonials = [
   {
     company: "BAIN & COMPANY",
     logo: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=200&h=80&fit=crop",
@@ -28,7 +31,7 @@ const testimonials = [
   }
 ];
 
-const partnerLogos = [
+const defaultPartnerLogos = [
   "MIRAKI",
   "STARLING BANK",
   "AVIVA",
@@ -40,6 +43,23 @@ const partnerLogos = [
 ];
 
 export const TestimonialsSection = () => {
+  const { data: sanityTestimonials } = useTestimonials();
+  const { data: sanityPartnerLogos } = usePartnerLogos();
+
+  // Utiliser les données Sanity ou les valeurs par défaut
+  const testimonials = sanityTestimonials && sanityTestimonials.length > 0 
+    ? sanityTestimonials.map(t => ({
+        company: t.company,
+        logo: t.logo ? urlFor(t.logo).width(200).url() : undefined,
+        quote: t.quote,
+        personName: t.personName,
+        personTitle: t.personTitle,
+        personImage: t.personImage ? urlFor(t.personImage).width(400).url() : undefined,
+      }))
+    : defaultTestimonials;
+
+  const partnerLogos = sanityPartnerLogos?.logos || defaultPartnerLogos;
+
   return (
     <section className="py-16 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
