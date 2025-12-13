@@ -2,6 +2,7 @@ import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 import { useTestimonials, usePartnerLogos } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
+import { useSectionStyles } from "./SectionWrapper";
 
 // Valeurs par défaut (fallback)
 const defaultTestimonials = [
@@ -45,6 +46,7 @@ const defaultPartnerLogos = [
 export const TestimonialsSection = () => {
   const { data: sanityTestimonials } = useTestimonials();
   const { data: sanityPartnerLogos } = usePartnerLogos();
+  const { sectionStyle, headingStyle } = useSectionStyles('testimonials');
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const testimonials = sanityTestimonials && sanityTestimonials.length > 0 
@@ -61,7 +63,10 @@ export const TestimonialsSection = () => {
   const partnerLogos = sanityPartnerLogos?.logos || defaultPartnerLogos;
 
   return (
-    <section className="py-16 px-4 bg-background">
+    <section 
+      className="py-16 px-4"
+      style={sectionStyle}
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">

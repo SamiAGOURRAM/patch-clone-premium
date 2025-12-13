@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import { useBlogPosts } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
+import { useSectionStyles } from "./SectionWrapper";
 
 // Valeurs par défaut (fallback)
 const defaultFeatures = [
@@ -33,6 +34,7 @@ const defaultFeatures = [
 
 export const FeaturesSection = () => {
   const { data: sanityPosts } = useBlogPosts();
+  const { sectionStyle, headingStyle } = useSectionStyles('features');
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const features = sanityPosts && sanityPosts.length > 0 
@@ -47,7 +49,10 @@ export const FeaturesSection = () => {
     : defaultFeatures;
 
   return (
-    <section className="py-24 px-4 bg-background">
+    <section 
+      className="py-24 px-4"
+      style={sectionStyle}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-12 animate-fade-in">
           <h2 className="text-2xl font-bold text-foreground">

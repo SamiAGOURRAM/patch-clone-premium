@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
 // Configuration du client Sanity
@@ -11,7 +11,7 @@ export const sanityClient = createClient({
 });
 
 // Helper pour construire les URLs d'images
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);
@@ -110,6 +110,44 @@ export interface SanityPartnerLogos {
   logos: string[];
 }
 
+export interface SanityColorSettings {
+  _id: string;
+  // Global colors
+  primary?: string;
+  primaryForeground?: string;
+  secondary?: string;
+  secondaryForeground?: string;
+  tertiary?: string;
+  tertiaryForeground?: string;
+  success?: string;
+  successForeground?: string;
+  accent?: string;
+  accentForeground?: string;
+  background?: string;
+  foreground?: string;
+  // Button colors
+  buttonPrimary?: string;
+  buttonPrimaryText?: string;
+  buttonPrimaryHover?: string;
+  buttonSecondary?: string;
+  buttonSecondaryText?: string;
+  buttonCTA?: string;
+  buttonCTAText?: string;
+  // Navigation colors
+  navBackground?: string;
+  navText?: string;
+  navTextHover?: string;
+  navButton?: string;
+  navButtonText?: string;
+  // Text colors
+  textHeading?: string;
+  textBody?: string;
+  textMuted?: string;
+  // Link colors
+  linkColor?: string;
+  linkHover?: string;
+}
+
 // Queries GROQ pour récupérer le contenu
 export const queries = {
   hero: `*[_type == "heroSection"][0]`,
@@ -121,6 +159,10 @@ export const queries = {
   footer: `*[_type == "footer"][0]`,
   contactInfo: `*[_type == "contactInfo"][0]`,
   partnerLogos: `*[_type == "partnerLogos"][0]`,
+  colorSettings: `*[_type == "colorSettings"][0]`,
+  announcementBanner: `*[_type == "announcementBanner"][0]`,
+  sectionColors: `*[_type == "sectionColors"]`,
+  sectionSettings: `*[_type == "sectionSettings"][0]`,
 };
 
 // Fonctions pour récupérer le contenu
@@ -158,4 +200,56 @@ export async function getContactInfo(): Promise<SanityContactInfo | null> {
 
 export async function getPartnerLogos(): Promise<SanityPartnerLogos | null> {
   return sanityClient.fetch(queries.partnerLogos);
+}
+
+export async function getColorSettings(): Promise<SanityColorSettings | null> {
+  return sanityClient.fetch(queries.colorSettings);
+}
+
+export interface SanityAnnouncementBanner {
+  _id: string;
+  enabled: boolean;
+  badgeText?: string;
+  message: string;
+  linkText?: string;
+  linkUrl?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  badgeBackgroundColor?: string;
+  badgeTextColor?: string;
+}
+
+export interface SanitySectionColors {
+  _id: string;
+  sectionName: string;
+  backgroundColor?: string;
+  textColor?: string;
+  headingColor?: string;
+  buttonBackgroundColor?: string;
+  buttonTextColor?: string;
+  linkColor?: string;
+  accentColor?: string;
+}
+
+export async function getAnnouncementBanner(): Promise<SanityAnnouncementBanner | null> {
+  return sanityClient.fetch(queries.announcementBanner);
+}
+
+export async function getSectionColors(): Promise<SanitySectionColors[]> {
+  return sanityClient.fetch(queries.sectionColors);
+}
+
+export interface SanitySectionSettings {
+  _id: string;
+  heroEnabled?: boolean;
+  statsEnabled?: boolean;
+  testimonialsEnabled?: boolean;
+  guideEnabled?: boolean;
+  videoEnabled?: boolean;
+  featuresEnabled?: boolean;
+  ctaEnabled?: boolean;
+}
+
+export async function getSectionSettings(): Promise<SanitySectionSettings | null> {
+  return sanityClient.fetch(queries.sectionSettings);
 }

@@ -9,6 +9,10 @@ import {
   getFooter,
   getContactInfo,
   getPartnerLogos,
+  getColorSettings,
+  getAnnouncementBanner,
+  getSectionColors,
+  getSectionSettings,
   type SanityHeroContent,
   type SanityStat,
   type SanityTestimonial,
@@ -18,6 +22,10 @@ import {
   type SanityFooter,
   type SanityContactInfo,
   type SanityPartnerLogos,
+  type SanityColorSettings,
+  type SanityAnnouncementBanner,
+  type SanitySectionColors,
+  type SanitySectionSettings,
 } from '@/lib/sanity';
 
 // Hook pour récupérer le contenu du Hero
@@ -97,6 +105,51 @@ export function usePartnerLogos() {
   return useQuery<SanityPartnerLogos | null>({
     queryKey: ['partnerLogos'],
     queryFn: getPartnerLogos,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres de couleurs
+export function useColorSettings() {
+  return useQuery<SanityColorSettings | null>({
+    queryKey: ['colorSettings'],
+    queryFn: getColorSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer la bannière d'annonce
+export function useAnnouncementBanner() {
+  return useQuery<SanityAnnouncementBanner | null>({
+    queryKey: ['announcementBanner'],
+    queryFn: getAnnouncementBanner,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les couleurs par section
+export function useSectionColors() {
+  return useQuery<SanitySectionColors[]>({
+    queryKey: ['sectionColors'],
+    queryFn: getSectionColors,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Helper hook pour obtenir les couleurs d'une section spécifique
+export function useSectionColor(sectionName: string) {
+  const { data: sectionColors, isLoading } = useSectionColors();
+  return {
+    data: sectionColors?.find(s => s.sectionName === sectionName),
+    isLoading,
+  };
+}
+
+// Hook pour récupérer les paramètres d'affichage des sections
+export function useSectionSettings() {
+  return useQuery<SanitySectionSettings | null>({
+    queryKey: ['sectionSettings'],
+    queryFn: getSectionSettings,
     staleTime: 1000 * 60 * 5,
   });
 }

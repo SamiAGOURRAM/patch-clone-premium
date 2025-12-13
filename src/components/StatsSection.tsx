@@ -1,4 +1,5 @@
 import { useStats } from "@/hooks/useSanity";
+import { useSectionStyles } from "./SectionWrapper";
 
 // Valeurs par défaut (fallback)
 const defaultStats = [
@@ -30,6 +31,7 @@ const defaultStats = [
 
 export const StatsSection = () => {
   const { data: sanityStats } = useStats();
+  const { sectionStyle, headingStyle } = useSectionStyles('stats');
   
   // Utiliser les données Sanity ou les valeurs par défaut
   const stats = sanityStats && sanityStats.length > 0 
@@ -42,7 +44,10 @@ export const StatsSection = () => {
     : defaultStats;
 
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
+    <section 
+      className="py-20 px-4 relative overflow-hidden"
+      style={sectionStyle}
+    >
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-success to-tertiary animate-aurora-shimmer" style={{ backgroundSize: "200% 200%" }} />
@@ -59,7 +64,10 @@ export const StatsSection = () => {
               <div className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-3 bg-gradient-to-r from-${stat.colorFrom} to-${stat.colorTo} bg-clip-text text-transparent transition-all duration-500 group-hover:scale-110`}>
                 {stat.value}
               </div>
-              <div className="text-muted-foreground text-sm md:text-base font-medium">
+              <div 
+                className="text-sm md:text-base font-medium"
+                style={headingStyle}
+              >
                 {stat.label}
               </div>
             </div>

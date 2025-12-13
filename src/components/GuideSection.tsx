@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { useMethods } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
+import { useSectionStyles } from "./SectionWrapper";
 
 // Valeurs par défaut (fallback)
 const defaultMethodesAurora = [
@@ -48,6 +49,26 @@ export const GuideSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const { data: sanityMethods } = useMethods();
+  const { sectionColors, isLoading } = useSectionStyles('guide');
+
+  // Debug: Log to see what we're getting
+  console.log('🔍 GuideSection Debug:', {
+    sectionColors,
+    isLoading,
+    hasBackgroundColor: !!sectionColors?.backgroundColor,
+    backgroundColorValue: sectionColors?.backgroundColor,
+  });
+
+  // Use Sanity colors if available, otherwise use default dark blue (#0F1C2E)
+  // This ensures Sanity colors always take precedence
+  const backgroundColor = sectionColors?.backgroundColor 
+    ? `hsl(${sectionColors.backgroundColor})` 
+    : '#0F1C2E';
+  const textColor = sectionColors?.textColor 
+    ? `hsl(${sectionColors.textColor})` 
+    : '#FAF7F3';
+
+  console.log('🎨 GuideSection Colors:', { backgroundColor, textColor });
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const methodesAurora = sanityMethods && sanityMethods.length > 0 
@@ -87,17 +108,33 @@ export const GuideSection = () => {
   };
 
   return (
-    <section className="py-12 px-4 bg-[#0F1C2E]">
+    <section 
+      className="py-12 px-4"
+      style={{
+        backgroundColor,
+        color: textColor,
+      } as React.CSSProperties}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Side - Text Content */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-background leading-tight">
+              <h2 
+                className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
+                style={{ color: sectionColors?.headingColor ? `hsl(${sectionColors.headingColor})` : textColor }}
+              >
                 Les Méthodes AURORA
               </h2>
               <Button
-                className="bg-background text-foreground hover:bg-background/90"
+                style={{
+                  backgroundColor: sectionColors?.buttonBackgroundColor 
+                    ? `hsl(${sectionColors.buttonBackgroundColor})` 
+                    : '#FAF7F3',
+                  color: sectionColors?.buttonTextColor 
+                    ? `hsl(${sectionColors.buttonTextColor})` 
+                    : '#214 59% 20%',
+                }}
               >
                 Découvrir notre approche
               </Button>
@@ -111,11 +148,15 @@ export const GuideSection = () => {
                   onClick={() => handleItemClick(index)}
                 >
                   {/* Timer Bar */}
-                  <div className="h-0.5 bg-background/20 mb-4 overflow-hidden rounded-full">
+                  <div 
+                    className="h-0.5 mb-4 overflow-hidden rounded-full"
+                    style={{ backgroundColor: `${textColor}33` }}
+                  >
                     <div
-                      className="h-full bg-background/60 transition-all duration-100 ease-linear"
+                      className="h-full transition-all duration-100 ease-linear"
                       style={{
                         width: activeIndex === index ? `${progress}%` : "0%",
+                        backgroundColor: textColor,
                       }}
                     />
                   </div>
@@ -124,19 +165,17 @@ export const GuideSection = () => {
                   <div className="space-y-2">
                     <h3
                       className={`text-lg font-medium transition-colors duration-300 ${
-                        activeIndex === index
-                          ? "text-background"
-                          : "text-background/40"
+                        activeIndex === index ? "" : "opacity-40"
                       }`}
+                      style={{ color: textColor }}
                     >
                       {item.title}
                     </h3>
                     <p
                       className={`text-sm leading-relaxed transition-colors duration-300 ${
-                        activeIndex === index
-                          ? "text-background"
-                          : "text-background/40"
+                        activeIndex === index ? "" : "opacity-40"
                       }`}
+                      style={{ color: textColor }}
                     >
                       {item.description}
                     </p>

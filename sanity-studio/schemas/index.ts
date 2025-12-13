@@ -7,6 +7,10 @@ import navigation from './navigation'
 import footer from './footer'
 import contactInfo from './contactInfo'
 import partnerLogos from './partnerLogos'
+import colorSettings from './colorSettings'
+import announcementBanner from './announcementBanner'
+import sectionColors from './sectionColors'
+import sectionSettings from './sectionSettings'
 
 export const schemaTypes = [
   heroSection,
@@ -18,4 +22,8 @@ export const schemaTypes = [
   footer,
   contactInfo,
   partnerLogos,
+  colorSettings,
+  announcementBanner,
+  sectionColors,
+  sectionSettings,
 ]

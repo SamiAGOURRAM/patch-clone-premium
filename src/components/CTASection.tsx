@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card, CardContent } from "./ui/card";
 import { useState } from "react";
 import { useContactInfo } from "@/hooks/useSanity";
+import { useSectionStyles } from "./SectionWrapper";
 
 // Valeurs par défaut (fallback)
 const defaultContactInfo = {
@@ -21,6 +22,7 @@ const defaultContactInfo = {
 export const CTASection = () => {
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const { data: sanityContactInfo } = useContactInfo();
+  const { sectionColors } = useSectionStyles('cta');
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const contactInfo = {
@@ -33,6 +35,14 @@ export const CTASection = () => {
     ctaTitle: sanityContactInfo?.ctaTitle || defaultContactInfo.ctaTitle,
     ctaSubtitle: sanityContactInfo?.ctaSubtitle || defaultContactInfo.ctaSubtitle,
   };
+
+  // Default dark background (#0F1C2E) if no color set in Sanity
+  const backgroundColor = sectionColors?.backgroundColor 
+    ? `hsl(${sectionColors.backgroundColor})` 
+    : '#0F1C2E';
+  const textColor = sectionColors?.textColor 
+    ? `hsl(${sectionColors.textColor})` 
+    : '#FAF7F3';
 
   const handleBookMeeting = async () => {
     const cal = await getCalApi();
@@ -49,16 +59,28 @@ export const CTASection = () => {
       {/* Separator Line */}
       <div className="w-full border-t border-border"></div>
       
-      <section className="py-24 px-4 bg-[#0F1C2E] text-background relative overflow-hidden">
+      <section 
+        className="py-24 px-4 relative overflow-hidden"
+        style={{
+          backgroundColor,
+          color: textColor,
+        }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-[#165C42]/20 via-transparent to-[#165C42]/20" />
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#165C42]/30 to-transparent" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#165C42]/30 to-transparent" />
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+        <h2 
+          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in"
+          style={{ color: sectionColors?.headingColor ? `hsl(${sectionColors.headingColor})` : textColor }}
+        >
           {contactInfo.ctaTitle}
         </h2>
-        <p className="text-xl md:text-2xl mb-10 text-background/80 animate-scale-in" style={{ animationDelay: "0.1s" }}>
+        <p 
+          className="text-xl md:text-2xl mb-10 animate-scale-in" 
+          style={{ animationDelay: "0.1s", color: textColor, opacity: 0.8 }}
+        >
           {contactInfo.ctaSubtitle}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in" style={{ animationDelay: "0.2s" }}>
@@ -66,7 +88,15 @@ export const CTASection = () => {
             <DialogTrigger asChild>
               <Button 
                 size="lg" 
-                className="bg-background text-foreground hover:bg-background/90 group"
+                className="group"
+                style={{
+                  backgroundColor: sectionColors?.buttonBackgroundColor 
+                    ? `hsl(${sectionColors.buttonBackgroundColor})` 
+                    : '#FAF7F3',
+                  color: sectionColors?.buttonTextColor 
+                    ? `hsl(${sectionColors.buttonTextColor})` 
+                    : '#214 59% 20%',
+                }}
               >
                 <Mail className="mr-2 h-5 w-5" />
                 Contact Us
@@ -127,8 +157,16 @@ export const CTASection = () => {
           </Dialog>
           <Button 
             size="lg" 
-            className="bg-background text-foreground hover:bg-background/90"
+            className="group"
             onClick={handleBookMeeting}
+            style={{
+              backgroundColor: sectionColors?.buttonBackgroundColor 
+                ? `hsl(${sectionColors.buttonBackgroundColor})` 
+                : '#FAF7F3',
+              color: sectionColors?.buttonTextColor 
+                ? `hsl(${sectionColors.buttonTextColor})` 
+                : '#214 59% 20%',
+            }}
           >
             <Calendar className="mr-2 h-5 w-5" />
             Book a Meeting

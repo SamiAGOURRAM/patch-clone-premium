@@ -4,6 +4,7 @@ import auroraImage from "@/assets/aurora-hero-dark.jpg";
 import { useState, useEffect } from "react";
 import { useHeroContent } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
+import { useSectionStyles } from "./SectionWrapper";
 
 // Valeurs par défaut (fallback si Sanity n'est pas configuré)
 const defaultValues = [
@@ -24,6 +25,7 @@ const defaultContent = {
 export const HeroSection = () => {
   const [currentValue, setCurrentValue] = useState(0);
   const { data: heroContent } = useHeroContent();
+  const { headingStyle, buttonStyle } = useSectionStyles('hero');
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const values = heroContent?.rotatingValues || defaultValues;

@@ -9,10 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-elegant hover:shadow-premium",
+        default: "shadow-elegant hover:shadow-premium",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        secondary: "",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-foreground underline-offset-4 hover:underline",
       },
@@ -37,9 +37,56 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, style, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    
+    // Apply Sanity colors based on variant if not already styled
+    const getButtonStyle = () => {
+      if (style) return style; // If style is provided, use it
+      
+      switch (variant) {
+        case 'default':
+          return {
+            backgroundColor: 'hsl(var(--button-primary))',
+            color: 'hsl(var(--button-primary-text))',
+          };
+        case 'secondary':
+          return {
+            backgroundColor: 'hsl(var(--button-secondary))',
+            color: 'hsl(var(--button-secondary-text))',
+          };
+        default:
+          return {};
+      }
+    };
+    
+    const buttonStyle = getButtonStyle();
+    
+    return (
+      <Comp 
+        className={cn(buttonVariants({ variant, size, className }))} 
+        ref={ref} 
+        style={{ ...buttonStyle, ...style }}
+        onMouseEnter={(e) => {
+          if (variant === 'default' || variant === undefined) {
+            const hoverColor = getComputedStyle(document.documentElement)
+              .getPropertyValue('--button-primary-hover').trim();
+            if (hoverColor) {
+              e.currentTarget.style.backgroundColor = `hsl(${hoverColor} / 0.9)`;
+            } else {
+              e.currentTarget.style.opacity = '0.9';
+            }
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (variant === 'default' || variant === undefined) {
+            e.currentTarget.style.backgroundColor = 'hsl(var(--button-primary))';
+            e.currentTarget.style.opacity = '1';
+          }
+        }}
+        {...props} 
+      />
+    );
   },
 );
 Button.displayName = "Button";
