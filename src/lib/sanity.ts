@@ -7,7 +7,7 @@ export const sanityClient = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'g5k024mq',
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: true, // `false` si vous voulez des données fraîches
+  useCdn: false, // Désactivé pour avoir des données fraîches immédiatement
 });
 
 // Helper pour construire les URLs d'images
@@ -52,12 +52,23 @@ export interface SanityTestimonial {
 export interface SanityBlogPost {
   _id: string;
   title: string;
-  subtitle: string;
+  slug?: { current: string };
+  subtitle?: string;
   category: string;
   description: string;
   image?: SanityImageSource;
+  content?: any[]; // Portable Text blocks
+  author?: {
+    name?: string;
+    role?: string;
+    image?: SanityImageSource;
+  };
+  tags?: string[];
   publishedAt: string;
-  order: number;
+  readingTime?: number;
+  featured?: boolean;
+  published?: boolean;
+  order?: number;
 }
 
 export interface SanityMethod {
@@ -97,10 +108,12 @@ export interface SanityContactInfo {
   _id: string;
   email: string;
   phone: string;
+  address?: string;
   instagram: string;
   twitter: string;
   linkedin: string;
   calComLink: string;
+  calendlyUrl?: string;
   ctaTitle: string;
   ctaSubtitle: string;
 }
@@ -148,21 +161,171 @@ export interface SanityColorSettings {
   linkHover?: string;
 }
 
+// Interfaces pour les paramètres de sections
+export interface SanityTestimonialsSectionSettings {
+  _id: string;
+  badgeText?: string;
+  sectionTitle: string;
+  buttonText?: string;
+  buttonLink?: string;
+}
+
+export interface SanityFeaturesSectionSettings {
+  _id: string;
+  sectionTitle: string;
+  viewMoreText?: string;
+  viewMoreLink?: string;
+  ctaButtonText?: string;
+  ctaButtonLink?: string;
+}
+
+export interface SanityGuideSectionSettings {
+  _id: string;
+  sectionTitle: string;
+  buttonText?: string;
+  buttonLink?: string;
+}
+
+export interface SanityStatsSectionSettings {
+  _id: string;
+  showHeader?: boolean;
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+}
+
+// Interfaces pour les pages
+export interface SanityPageUnivers {
+  _id: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  universes: {
+    title: string;
+    subtitle: string;
+    description: string;
+    icon: string;
+    colorFrom: string;
+    colorTo: string;
+    features: string[];
+  }[];
+  ctaTitle: string;
+  ctaSubtitle: string;
+  ctaButtonText: string;
+}
+
+export interface SanityPageMethode {
+  _id: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  methodSteps: {
+    number: string;
+    title: string;
+    subtitle: string;
+    description: string;
+    icon: string;
+    details: string[];
+  }[];
+  ctaTitle: string;
+  ctaSubtitle: string;
+  ctaButtonText: string;
+}
+
+export interface SanityPageAme {
+  _id: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  manifeste: {
+    title: string;
+    subtitle: string;
+    content: string;
+    highlights: string[];
+  };
+  origines: {
+    title: string;
+    subtitle: string;
+    content: string;
+    milestones: { year: string; event: string }[];
+  };
+  valeurs: {
+    title: string;
+    subtitle: string;
+    content: string;
+    values: { name: string; description: string }[];
+  };
+  ctaTitle: string;
+  ctaSubtitle: string;
+  ctaButtonText: string;
+}
+
+export interface SanityPageReseau {
+  _id: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  networkStats: {
+    value: string;
+    label: string;
+    icon: string;
+  }[];
+  partnerTypesTitle: string;
+  partnerTypesSubtitle: string;
+  partnerTypes: {
+    title: string;
+    description: string;
+    count: string;
+  }[];
+  regionsTitle: string;
+  regionsSubtitle: string;
+  regions: string[];
+  joinCtaTitle: string;
+  joinCtaSubtitle: string;
+  joinCtaButtonText: string;
+  contactButtonText: string;
+}
+
+// Interface pour les paramètres du site (logos)
+export interface SanitySiteSettings {
+  _id: string;
+  siteName: string;
+  headerLogo?: SanityImageSource;
+  footerLogo?: SanityImageSource;
+  footerTagline?: string;
+  copyright?: string;
+  socialLinks?: {
+    platform: string;
+    url: string;
+  }[];
+  contactEmail?: string;
+  contactPhone?: string;
+}
+
 // Queries GROQ pour récupérer le contenu
 export const queries = {
   hero: `*[_type == "heroSection"][0]`,
   stats: `*[_type == "stat"] | order(order asc)`,
   testimonials: `*[_type == "testimonial"] | order(order asc)`,
-  blogPosts: `*[_type == "blogPost"] | order(order asc)`,
+  blogPosts: `*[_type == "blogPost" && published != false] | order(order asc, publishedAt desc)`,
+  featuredBlogPosts: `*[_type == "blogPost" && featured == true && published != false] | order(order asc, publishedAt desc)[0...3]`,
+  allBlogPosts: `*[_type == "blogPost" && published != false] | order(publishedAt desc)`,
+  blogPostBySlug: `*[_type == "blogPost" && slug.current == $slug][0]`,
   methods: `*[_type == "method"] | order(order asc)`,
   navigation: `*[_type == "navigation"][0]`,
   footer: `*[_type == "footer"][0]`,
   contactInfo: `*[_type == "contactInfo"][0]`,
   partnerLogos: `*[_type == "partnerLogos"][0]`,
   colorSettings: `*[_type == "colorSettings"][0]`,
-  announcementBanner: `*[_type == "announcementBanner"][0]`,
+  announcementBanner: `*[_id == "announcementBanner"][0]`,
   sectionColors: `*[_type == "sectionColors"]`,
   sectionSettings: `*[_type == "sectionSettings"][0]`,
+  testimonialsSectionSettings: `*[_type == "testimonialsSectionSettings"][0]`,
+  featuresSectionSettings: `*[_type == "featuresSectionSettings"][0]`,
+  guideSectionSettings: `*[_type == "guideSectionSettings"][0]`,
+  statsSectionSettings: `*[_type == "statsSectionSettings"][0]`,
+  // Pages
+  pageUnivers: `*[_id == "pageUnivers"][0]`,
+  pageMethode: `*[_id == "pageMethode"][0]`,
+  pageAme: `*[_id == "pageAme"][0]`,
+  pageReseau: `*[_id == "pageReseau"][0]`,
+  // Site Settings (Logos)
+  siteSettings: `*[_id == "siteSettings"][0]`,
 };
 
 // Fonctions pour récupérer le contenu
@@ -180,6 +343,18 @@ export async function getTestimonials(): Promise<SanityTestimonial[]> {
 
 export async function getBlogPosts(): Promise<SanityBlogPost[]> {
   return sanityClient.fetch(queries.blogPosts);
+}
+
+export async function getFeaturedBlogPosts(): Promise<SanityBlogPost[]> {
+  return sanityClient.fetch(queries.featuredBlogPosts);
+}
+
+export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
+  return sanityClient.fetch(queries.allBlogPosts);
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | null> {
+  return sanityClient.fetch(queries.blogPostBySlug, { slug });
 }
 
 export async function getMethods(): Promise<SanityMethod[]> {
@@ -252,4 +427,43 @@ export interface SanitySectionSettings {
 
 export async function getSectionSettings(): Promise<SanitySectionSettings | null> {
   return sanityClient.fetch(queries.sectionSettings);
+}
+
+// Fonctions pour récupérer les paramètres de sections
+export async function getTestimonialsSectionSettings(): Promise<SanityTestimonialsSectionSettings | null> {
+  return sanityClient.fetch(queries.testimonialsSectionSettings);
+}
+
+export async function getFeaturesSectionSettings(): Promise<SanityFeaturesSectionSettings | null> {
+  return sanityClient.fetch(queries.featuresSectionSettings);
+}
+
+export async function getGuideSectionSettings(): Promise<SanityGuideSectionSettings | null> {
+  return sanityClient.fetch(queries.guideSectionSettings);
+}
+
+export async function getStatsSectionSettings(): Promise<SanityStatsSectionSettings | null> {
+  return sanityClient.fetch(queries.statsSectionSettings);
+}
+
+// Fonctions pour récupérer les pages
+export async function getPageUnivers(): Promise<SanityPageUnivers | null> {
+  return sanityClient.fetch(queries.pageUnivers);
+}
+
+export async function getPageMethode(): Promise<SanityPageMethode | null> {
+  return sanityClient.fetch(queries.pageMethode);
+}
+
+export async function getPageAme(): Promise<SanityPageAme | null> {
+  return sanityClient.fetch(queries.pageAme);
+}
+
+export async function getPageReseau(): Promise<SanityPageReseau | null> {
+  return sanityClient.fetch(queries.pageReseau);
+}
+
+// Fonction pour récupérer les paramètres du site (logos)
+export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
+  return sanityClient.fetch(queries.siteSettings);
 }

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useHeroContent } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
 import { useSectionStyles } from "./SectionWrapper";
+import { useContact } from "./ContactModalProvider";
 
 // Valeurs par défaut (fallback si Sanity n'est pas configuré)
 const defaultValues = [
@@ -19,13 +20,14 @@ const defaultContent = {
   subTitle: "des connexions",
   accentText: "durables",
   accompanyText: "AURORA vous accompagne pour",
-  ctaButtonText: "Découvrir AURORA en vidéo",
+  ctaButtonText: "Nous contacter",
 };
 
 export const HeroSection = () => {
   const [currentValue, setCurrentValue] = useState(0);
   const { data: heroContent } = useHeroContent();
   const { headingStyle, buttonStyle } = useSectionStyles('hero');
+  const { openContactModal } = useContact();
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const values = heroContent?.rotatingValues || defaultValues;
@@ -106,8 +108,8 @@ export const HeroSection = () => {
             variant="ghost" 
             className="mt-4 group font-medium bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 hover:text-white"
             size="lg"
+            onClick={openContactModal}
           >
-            <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
             {content.ctaButtonText}
           </Button>
         </div>

@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -6,7 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useNavigation } from "@/hooks/useSanity";
+import { useNavigation, useSiteSettings } from "@/hooks/useSanity";
+import { urlFor } from "@/lib/sanity";
+import { useContact } from "./ContactModalProvider";
 
 // Valeurs par défaut (fallback si Sanity n'est pas configuré)
 const defaultNavigation = {
@@ -14,38 +17,41 @@ const defaultNavigation = {
   menuItems: [
     {
       label: "Nos Univers",
+      href: "/univers",
       subItems: [
-        { label: "Espace", href: "#espace" },
-        { label: "Expérience", href: "#experience" },
-        { label: "Structure", href: "#structure" },
-        { label: "Image", href: "#image" },
+        { label: "Espace", href: "/univers#espace" },
+        { label: "Expérience", href: "/univers#experience" },
+        { label: "Structure", href: "/univers#structure" },
+        { label: "Image", href: "/univers#image" },
       ],
     },
     {
       label: "Méthode AURORA",
+      href: "/methode",
       subItems: [
-        { label: "Observer", href: "#observer" },
-        { label: "Orienter", href: "#orienter" },
-        { label: "Structurer", href: "#structurer" },
-        { label: "Accompagner", href: "#accompagner" },
-        { label: "Préserver", href: "#preserver" },
+        { label: "Observer", href: "/methode#observer" },
+        { label: "Orienter", href: "/methode#orienter" },
+        { label: "Structurer", href: "/methode#structurer" },
+        { label: "Accompagner", href: "/methode#accompagner" },
+        { label: "Préserver", href: "/methode#preserver" },
       ],
     },
     {
       label: "Réseau",
-      href: "#network",
+      href: "/reseau",
     },
     {
       label: "L'Âme",
+      href: "/ame",
       subItems: [
-        { label: "Manifeste", href: "#manifeste" },
-        { label: "Origines", href: "#origines" },
-        { label: "Valeurs", href: "#valeurs" },
+        { label: "Manifeste", href: "/ame#manifeste" },
+        { label: "Origines", href: "/ame#origines" },
+        { label: "Valeurs", href: "/ame#valeurs" },
       ],
     },
     {
       label: "Les Connexions Durables",
-      href: "#magazine",
+      href: "/blog",
     },
   ],
   ctaButtonText: "Nous contacter",
@@ -53,10 +59,12 @@ const defaultNavigation = {
 
 export const Navigation = () => {
   const { data: sanityNavigation } = useNavigation();
+  const { data: siteSettings } = useSiteSettings();
+  const { openContactModal } = useContact();
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const navigation = {
-    logoText: sanityNavigation?.logoText || defaultNavigation.logoText,
+    logoText: siteSettings?.siteName || sanityNavigation?.logoText || defaultNavigation.logoText,
     menuItems: sanityNavigation?.menuItems || defaultNavigation.menuItems,
     ctaButtonText: sanityNavigation?.ctaButtonText || defaultNavigation.ctaButtonText,
   };
@@ -71,18 +79,29 @@ export const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <span 
-              className="text-2xl font-bold tracking-wide"
-              style={{ color: 'hsl(var(--nav-text))' }}
-            >
-              {navigation.logoText}
-            </span>
-          </div>
+          <Link to="/" className="flex items-center gap-3">
+            {siteSettings?.headerLogo ? (
+              <img 
+                src={urlFor(siteSettings.headerLogo).height(40).url()} 
+                alt={navigation.logoText}
+                className="h-10 w-auto"
+              />
+            ) : (
+              <span 
+                className="text-2xl font-bold tracking-wide"
+                style={{ color: 'hsl(var(--nav-text))' }}
+              >
+                {navigation.logoText}
+              </span>
+            )}
+          </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
             {navigation.menuItems.map((item, index) => {
+              // Helper to determine if link is internal (starts with /)
+              const isInternal = (href: string) => href?.startsWith('/');
+              
               // Si l'item a des sous-éléments, afficher un dropdown
               if (item.subItems && item.subItems.length > 0) {
                 return (
@@ -105,7 +124,11 @@ export const Navigation = () => {
                     <DropdownMenuContent className="bg-popover z-50">
                       {item.subItems.map((subItem, subIndex) => (
                         <DropdownMenuItem key={subIndex} asChild>
-                          <a href={subItem.href}>{subItem.label}</a>
+                          {isInternal(subItem.href) ? (
+                            <Link to={subItem.href}>{subItem.label}</Link>
+                          ) : (
+                            <a href={subItem.href}>{subItem.label}</a>
+                          )}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -113,10 +136,31 @@ export const Navigation = () => {
                 );
               }
               // Sinon, afficher un lien simple
+              const href = item.href || "#";
+              if (isInternal(href)) {
+                return (
+                  <Link
+                    key={index}
+                    to={href}
+                    className="transition-colors font-medium"
+                    style={{ 
+                      color: 'hsl(var(--nav-text))',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'hsl(var(--nav-text-hover))';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'hsl(var(--nav-text))';
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
               return (
                 <a
                   key={index}
-                  href={item.href || "#"}
+                  href={href}
                   className="transition-colors font-medium"
                   style={{ 
                     color: 'hsl(var(--nav-text))',
@@ -139,21 +183,18 @@ export const Navigation = () => {
             <Button 
               size="lg" 
               className="font-medium"
+              onClick={openContactModal}
               style={{
                 backgroundColor: 'hsl(var(--nav-button))',
                 color: 'hsl(var(--nav-button-text))',
               }}
               onMouseEnter={(e) => {
-                const hoverColor = getComputedStyle(document.documentElement)
-                  .getPropertyValue('--button-primary-hover').trim() || 
-                  getComputedStyle(document.documentElement)
-                  .getPropertyValue('--nav-button').trim();
-                e.currentTarget.style.backgroundColor = hoverColor 
-                  ? `hsl(${hoverColor} / 0.9)` 
-                  : e.currentTarget.style.backgroundColor;
+                e.currentTarget.style.opacity = '0.9';
+                e.currentTarget.style.transform = 'translateY(-1px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'hsl(var(--nav-button))';
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
               {navigation.ctaButtonText}

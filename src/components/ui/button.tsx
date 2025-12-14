@@ -11,9 +11,9 @@ const buttonVariants = cva(
       variant: {
         default: "shadow-elegant hover:shadow-premium",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        outline: "border border-input bg-background hover:bg-muted",
         secondary: "",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-muted",
         link: "text-foreground underline-offset-4 hover:underline",
       },
       size: {
@@ -69,19 +69,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         style={{ ...buttonStyle, ...style }}
         onMouseEnter={(e) => {
           if (variant === 'default' || variant === undefined) {
-            const hoverColor = getComputedStyle(document.documentElement)
-              .getPropertyValue('--button-primary-hover').trim();
-            if (hoverColor) {
-              e.currentTarget.style.backgroundColor = `hsl(${hoverColor} / 0.9)`;
-            } else {
-              e.currentTarget.style.opacity = '0.9';
-            }
+            // Subtle opacity change on hover - no color change
+            e.currentTarget.style.opacity = '0.85';
+            e.currentTarget.style.transform = 'translateY(-1px)';
           }
         }}
         onMouseLeave={(e) => {
           if (variant === 'default' || variant === undefined) {
-            e.currentTarget.style.backgroundColor = 'hsl(var(--button-primary))';
             e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateY(0)';
           }
         }}
         {...props} 

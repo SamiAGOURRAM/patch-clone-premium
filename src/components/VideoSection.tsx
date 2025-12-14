@@ -1,30 +1,33 @@
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const VideoSection = () => {
   return (
     <section className="py-16 px-4 bg-[#0F1C2E]">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
-          <Button
-            className="bg-background text-foreground hover:bg-background/90"
-          >
-            See the platform
-          </Button>
+          <Link to="/univers">
+            <Button
+              className="bg-background text-foreground hover:bg-background/90"
+            >
+              Découvrir notre univers
+            </Button>
+          </Link>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left Side - Title */}
           <div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-background leading-tight">
-              A climate expert takes you inside the platform
+              Une experte Aurora vous présente notre vision
             </h2>
           </div>
 
           {/* Right Side - Description */}
           <div>
             <p className="text-background/80 text-lg leading-relaxed">
-              Bee Hui Yeh, our Head of Climate Strategy & Solutions, shows you how Patch can help sustainability leaders meet their biggest carbon market challenges.
+              Découvrez comment Aurora accompagne les leaders de la transformation durable pour relever leurs plus grands défis et créer un impact positif.
             </p>
           </div>
         </div>
@@ -42,7 +45,7 @@ export const VideoSection = () => {
             {/* Background image placeholder */}
             <img
               src="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg?auto=compress&cs=tinysrgb&w=1200"
-              alt="Climate expert presentation"
+              alt="Présentation Aurora"
               className="w-full h-full object-cover opacity-70"
             />
           </div>

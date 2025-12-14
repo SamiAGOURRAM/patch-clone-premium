@@ -2,6 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
+import {deskStructure} from './deskStructure'
 
 export default defineConfig({
   name: 'aurora-studio',
@@ -11,7 +12,9 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    structureTool(),
+    structureTool({
+      structure: deskStructure,
+    }),
     visionTool(),
   ],
 

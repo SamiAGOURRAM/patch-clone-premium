@@ -4,6 +4,9 @@ import {
   getStats,
   getTestimonials,
   getBlogPosts,
+  getFeaturedBlogPosts,
+  getAllBlogPosts,
+  getBlogPostBySlug,
   getMethods,
   getNavigation,
   getFooter,
@@ -13,6 +16,15 @@ import {
   getAnnouncementBanner,
   getSectionColors,
   getSectionSettings,
+  getTestimonialsSectionSettings,
+  getFeaturesSectionSettings,
+  getGuideSectionSettings,
+  getStatsSectionSettings,
+  getPageUnivers,
+  getPageMethode,
+  getPageAme,
+  getPageReseau,
+  getSiteSettings,
   type SanityHeroContent,
   type SanityStat,
   type SanityTestimonial,
@@ -26,6 +38,15 @@ import {
   type SanityAnnouncementBanner,
   type SanitySectionColors,
   type SanitySectionSettings,
+  type SanityTestimonialsSectionSettings,
+  type SanityFeaturesSectionSettings,
+  type SanityGuideSectionSettings,
+  type SanityStatsSectionSettings,
+  type SanityPageUnivers,
+  type SanityPageMethode,
+  type SanityPageAme,
+  type SanityPageReseau,
+  type SanitySiteSettings,
 } from '@/lib/sanity';
 
 // Hook pour récupérer le contenu du Hero
@@ -61,6 +82,34 @@ export function useBlogPosts() {
     queryKey: ['blogPosts'],
     queryFn: getBlogPosts,
     staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les articles mis en avant (homepage)
+export function useFeaturedBlogPosts() {
+  return useQuery<SanityBlogPost[]>({
+    queryKey: ['featuredBlogPosts'],
+    queryFn: getFeaturedBlogPosts,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer tous les articles (page blog)
+export function useAllBlogPosts() {
+  return useQuery<SanityBlogPost[]>({
+    queryKey: ['allBlogPosts'],
+    queryFn: getAllBlogPosts,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer un article par son slug
+export function useBlogPost(slug: string) {
+  return useQuery<SanityBlogPost | null>({
+    queryKey: ['blogPost', slug],
+    queryFn: () => getBlogPostBySlug(slug),
+    staleTime: 1000 * 60 * 5,
+    enabled: !!slug,
   });
 }
 
@@ -139,10 +188,8 @@ export function useSectionColors() {
 // Helper hook pour obtenir les couleurs d'une section spécifique
 export function useSectionColor(sectionName: string) {
   const { data: sectionColors, isLoading } = useSectionColors();
-  return {
-    data: sectionColors?.find(s => s.sectionName === sectionName),
-    isLoading,
-  };
+  const sectionColor = sectionColors?.find(s => s.sectionName === sectionName);
+  return sectionColor;
 }
 
 // Hook pour récupérer les paramètres d'affichage des sections
@@ -150,6 +197,89 @@ export function useSectionSettings() {
   return useQuery<SanitySectionSettings | null>({
     queryKey: ['sectionSettings'],
     queryFn: getSectionSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres de la section Témoignages
+export function useTestimonialsSectionSettings() {
+  return useQuery<SanityTestimonialsSectionSettings | null>({
+    queryKey: ['testimonialsSectionSettings'],
+    queryFn: getTestimonialsSectionSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres de la section Blog/Features
+export function useFeaturesSectionSettings() {
+  return useQuery<SanityFeaturesSectionSettings | null>({
+    queryKey: ['featuresSectionSettings'],
+    queryFn: getFeaturesSectionSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres de la section Méthodes
+export function useGuideSectionSettings() {
+  return useQuery<SanityGuideSectionSettings | null>({
+    queryKey: ['guideSectionSettings'],
+    queryFn: getGuideSectionSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres de la section Stats
+export function useStatsSectionSettings() {
+  return useQuery<SanityStatsSectionSettings | null>({
+    queryKey: ['statsSectionSettings'],
+    queryFn: getStatsSectionSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// === HOOKS POUR LES PAGES ===
+
+// Hook pour récupérer la page Univers
+export function usePageUnivers() {
+  return useQuery<SanityPageUnivers | null>({
+    queryKey: ['pageUnivers'],
+    queryFn: getPageUnivers,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer la page Méthode
+export function usePageMethode() {
+  return useQuery<SanityPageMethode | null>({
+    queryKey: ['pageMethode'],
+    queryFn: getPageMethode,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer la page Âme
+export function usePageAme() {
+  return useQuery<SanityPageAme | null>({
+    queryKey: ['pageAme'],
+    queryFn: getPageAme,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer la page Réseau
+export function usePageReseau() {
+  return useQuery<SanityPageReseau | null>({
+    queryKey: ['pageReseau'],
+    queryFn: getPageReseau,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres du site (logos)
+export function useSiteSettings() {
+  return useQuery<SanitySiteSettings | null>({
+    queryKey: ['siteSettings'],
+    queryFn: getSiteSettings,
     staleTime: 1000 * 60 * 5,
   });
 }

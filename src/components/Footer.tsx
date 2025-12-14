@@ -1,107 +1,77 @@
-import { useFooter } from "@/hooks/useSanity";
+import { useSiteSettings } from "@/hooks/useSanity";
+import { urlFor } from "@/lib/sanity";
+import { Link } from "react-router-dom";
+import { Linkedin, Instagram, Twitter, Facebook, Youtube } from "lucide-react";
 
-// Valeurs par défaut (fallback)
-const defaultFooterLinks = {
-  Product: ["Carbon credits", "Platform", "API", "Pricing"],
-  Company: ["About", "Team", "Careers", "Contact"],
-  Resources: ["Blog", "Documentation", "Reports", "Help center"],
-  Legal: ["Privacy", "Terms", "Security", "Compliance"],
-};
-
-const defaultFooterData = {
-  logoText: "Aurora",
-  description: "Accelerating climate solutions for a sustainable future.",
-  copyright: "© 2025 Aurora. All rights reserved.",
-  socialLinks: [
-    { platform: "Twitter", url: "#" },
-    { platform: "LinkedIn", url: "#" },
-    { platform: "GitHub", url: "#" },
-  ],
+// Icônes pour les réseaux sociaux
+const socialIcons: Record<string, React.ElementType> = {
+  linkedin: Linkedin,
+  instagram: Instagram,
+  twitter: Twitter,
+  facebook: Facebook,
+  youtube: Youtube,
 };
 
 export const Footer = () => {
-  const { data: sanityFooter } = useFooter();
+  const { data: siteSettings } = useSiteSettings();
 
-  // Utiliser les données Sanity ou les valeurs par défaut
-  const footerData = {
-    logoText: sanityFooter?.logoText || defaultFooterData.logoText,
-    description: sanityFooter?.description || defaultFooterData.description,
-    copyright: sanityFooter?.copyright || defaultFooterData.copyright,
-    socialLinks: sanityFooter?.socialLinks || defaultFooterData.socialLinks,
-  };
-
-  // Transformer les catégories de liens de Sanity ou utiliser les valeurs par défaut
-  const footerLinks = sanityFooter?.linkCategories 
-    ? Object.fromEntries(
-        sanityFooter.linkCategories.map(cat => [
-          cat.title, 
-          cat.links.map(l => l.label)
-        ])
-      )
-    : defaultFooterLinks;
-
-  const linkUrls = sanityFooter?.linkCategories 
-    ? Object.fromEntries(
-        sanityFooter.linkCategories.map(cat => [
-          cat.title, 
-          Object.fromEntries(cat.links.map(l => [l.label, l.href]))
-        ])
-      )
-    : null;
+  const siteName = siteSettings?.siteName || "Aurora";
+  const tagline = siteSettings?.footerTagline || "À l'aube des connexions durables";
+  const copyright = siteSettings?.copyright || `© ${new Date().getFullYear()} ${siteName}. Tous droits réservés.`;
+  const socialLinks = siteSettings?.socialLinks || [];
 
   return (
-    <footer className="bg-background py-16 px-4">
+    <footer className="bg-background py-8 px-4 border-t border-border">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
-          {/* Logo & Description */}
-          <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full border-2 border-foreground flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-foreground" />
-              </div>
-              <span className="text-xl font-bold">{footerData.logoText}</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {footerData.description}
-            </p>
+        {/* Single row layout */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Logo & Tagline */}
+          <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-3">
+              {siteSettings?.footerLogo ? (
+                <img 
+                  src={urlFor(siteSettings.footerLogo).height(40).url()} 
+                  alt={siteName}
+                  className="h-10 w-auto"
+                />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full border-2 border-foreground flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-foreground" />
+                  </div>
+                  <span className="text-xl font-bold">{siteName}</span>
+                </div>
+              )}
+            </Link>
+            <span className="hidden md:inline text-muted-foreground">|</span>
+            <span className="text-sm text-muted-foreground">{tagline}</span>
           </div>
 
-          {/* Footer Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h4 className="font-semibold mb-4">{category}</h4>
-              <ul className="space-y-2">
-                {(links as string[]).map((link) => (
-                  <li key={link}>
-                    <a
-                      href={linkUrls?.[category]?.[link] || "#"}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+          {/* Social Links */}
+          {socialLinks.length > 0 && (
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social) => {
+                const Icon = socialIcons[social.platform?.toLowerCase()] || Linkedin;
+                return (
+                  <a 
+                    key={social.platform}
+                    href={social.url || "#"} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={social.platform}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          )}
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* Copyright */}
           <p className="text-sm text-muted-foreground">
-            {footerData.copyright}
+            {copyright}
           </p>
-          <div className="flex gap-6">
-            {footerData.socialLinks.map((social) => (
-              <a 
-                key={social.platform}
-                href={social.url || "#"} 
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {social.platform}
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </footer>

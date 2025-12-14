@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useSectionColor } from '@/hooks/useSanity';
 
 interface SectionWrapperProps {
@@ -20,17 +20,21 @@ export const SectionWrapper = ({
 }: SectionWrapperProps) => {
   const sectionColors = useSectionColor(sectionName);
 
-  const styles: React.CSSProperties = {};
-  
-  if (sectionColors?.backgroundColor) {
-    styles.backgroundColor = `hsl(${sectionColors.backgroundColor})`;
-  } else if (defaultBackground) {
-    styles.backgroundColor = defaultBackground;
-  }
+  const styles: React.CSSProperties = useMemo(() => {
+    const s: React.CSSProperties = {};
+    
+    if (sectionColors?.backgroundColor) {
+      s.backgroundColor = `hsl(${sectionColors.backgroundColor})`;
+    } else if (defaultBackground) {
+      s.backgroundColor = defaultBackground;
+    }
 
-  if (sectionColors?.textColor) {
-    styles.color = `hsl(${sectionColors.textColor})`;
-  }
+    if (sectionColors?.textColor) {
+      s.color = `hsl(${sectionColors.textColor})`;
+    }
+    
+    return s;
+  }, [sectionColors?.backgroundColor, sectionColors?.textColor, defaultBackground]);
 
   return (
     <section 
@@ -49,7 +53,7 @@ export const SectionWrapper = ({
 export const useSectionStyles = (sectionName: string) => {
   const sectionColors = useSectionColor(sectionName);
   
-  return {
+  const styles = useMemo(() => ({
     sectionStyle: {
       backgroundColor: sectionColors?.backgroundColor 
         ? `hsl(${sectionColors.backgroundColor})` 
@@ -81,7 +85,9 @@ export const useSectionStyles = (sectionName: string) => {
         ? `hsl(${sectionColors.accentColor})` 
         : undefined,
     },
-    sectionColors, // Expose full object for custom use
-  };
+    sectionColors,
+  }), [sectionColors]);
+
+  return styles;
 };
 

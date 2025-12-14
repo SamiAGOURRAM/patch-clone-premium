@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { useMethods } from "@/hooks/useSanity";
+import { useMethods, useGuideSectionSettings } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
 import { useSectionStyles } from "./SectionWrapper";
+
+// Valeurs par défaut pour les paramètres de section
+const defaultSectionSettings = {
+  sectionTitle: "Les Méthodes AURORA",
+  buttonText: "Découvrir notre méthode",
+  buttonLink: "/methode",
+};
 
 // Valeurs par défaut (fallback)
 const defaultMethodesAurora = [
@@ -49,26 +55,23 @@ export const GuideSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const { data: sanityMethods } = useMethods();
-  const { sectionColors, isLoading } = useSectionStyles('guide');
+  const { data: sectionSettingsData } = useGuideSectionSettings();
+  const { sectionColors } = useSectionStyles('guide');
 
-  // Debug: Log to see what we're getting
-  console.log('🔍 GuideSection Debug:', {
-    sectionColors,
-    isLoading,
-    hasBackgroundColor: !!sectionColors?.backgroundColor,
-    backgroundColorValue: sectionColors?.backgroundColor,
-  });
+  // Paramètres de section (Sanity ou valeurs par défaut)
+  const sectionSettings = {
+    sectionTitle: sectionSettingsData?.sectionTitle || defaultSectionSettings.sectionTitle,
+    buttonText: sectionSettingsData?.buttonText || defaultSectionSettings.buttonText,
+    buttonLink: sectionSettingsData?.buttonLink || defaultSectionSettings.buttonLink,
+  };
 
   // Use Sanity colors if available, otherwise use default dark blue (#0F1C2E)
-  // This ensures Sanity colors always take precedence
   const backgroundColor = sectionColors?.backgroundColor 
     ? `hsl(${sectionColors.backgroundColor})` 
     : '#0F1C2E';
   const textColor = sectionColors?.textColor 
     ? `hsl(${sectionColors.textColor})` 
     : '#FAF7F3';
-
-  console.log('🎨 GuideSection Colors:', { backgroundColor, textColor });
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const methodesAurora = sanityMethods && sanityMethods.length > 0 
@@ -124,20 +127,8 @@ export const GuideSection = () => {
                 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
                 style={{ color: sectionColors?.headingColor ? `hsl(${sectionColors.headingColor})` : textColor }}
               >
-                Les Méthodes AURORA
+                {sectionSettings.sectionTitle}
               </h2>
-              <Button
-                style={{
-                  backgroundColor: sectionColors?.buttonBackgroundColor 
-                    ? `hsl(${sectionColors.buttonBackgroundColor})` 
-                    : '#FAF7F3',
-                  color: sectionColors?.buttonTextColor 
-                    ? `hsl(${sectionColors.buttonTextColor})` 
-                    : '#214 59% 20%',
-                }}
-              >
-                Découvrir notre approche
-              </Button>
             </div>
 
             <div className="space-y-4 mt-8">

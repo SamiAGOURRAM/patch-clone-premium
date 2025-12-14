@@ -1,33 +1,40 @@
-import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
-import { useTestimonials, usePartnerLogos } from "@/hooks/useSanity";
+import { useTestimonials, usePartnerLogos, useTestimonialsSectionSettings } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
 import { useSectionStyles } from "./SectionWrapper";
+
+// Valeurs par défaut pour les paramètres de section
+const defaultSectionSettings = {
+  badgeText: "Nos clients témoignent",
+  sectionTitle: "Découvrez les entreprises qui font confiance à Aurora pour les accompagner dans leur transformation",
+  buttonText: "Nous contacter",
+  buttonLink: "",
+};
 
 // Valeurs par défaut (fallback)
 const defaultTestimonials = [
   {
-    company: "BAIN & COMPANY",
+    company: "ENTREPRISE A",
     logo: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=200&h=80&fit=crop",
-    quote: "It's important to find a partner with deep expertise, like Patch, who you can trust to source and diligence high-integrity projects.",
-    personName: "Sam Israelit",
-    personTitle: "Partner and Chief Sustainability Officer",
+    quote: "Aurora nous a accompagnés dans notre transformation avec une expertise et une écoute remarquables. Un partenaire de confiance.",
+    personName: "Marie Dupont",
+    personTitle: "Directrice Générale",
     personImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop"
   },
   {
-    company: "IFS",
+    company: "GROUPE B",
     logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=80&fit=crop",
-    quote: "With Patch's support we chose a multi-year contract, providing certainty to the carbon project developers and to our business.",
-    personName: "Sophie Graham",
-    personTitle: "Chief Sustainability Officer",
+    quote: "Grâce à Aurora, nous avons pu structurer notre démarche RSE et engager l'ensemble de nos équipes dans une vision durable.",
+    personName: "Jean-Pierre Martin",
+    personTitle: "Directeur RSE",
     personImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=500&fit=crop"
   },
   {
-    company: "CHANGE CLIMATE",
+    company: "SOCIÉTÉ C",
     logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=80&fit=crop",
-    quote: "Patch has been instrumental in helping us navigate the complex carbon markets and find the right projects for our sustainability goals.",
-    personName: "Michael Chen",
-    personTitle: "Director of Climate Strategy",
+    quote: "L'approche d'Aurora est unique : pragmatique, humaine et orientée résultats. Une collaboration exceptionnelle.",
+    personName: "Sophie Bernard",
+    personTitle: "Présidente",
     personImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop"
   }
 ];
@@ -46,7 +53,14 @@ const defaultPartnerLogos = [
 export const TestimonialsSection = () => {
   const { data: sanityTestimonials } = useTestimonials();
   const { data: sanityPartnerLogos } = usePartnerLogos();
-  const { sectionStyle, headingStyle } = useSectionStyles('testimonials');
+  const { data: sectionSettingsData } = useTestimonialsSectionSettings();
+  const { sectionStyle } = useSectionStyles('testimonials');
+
+  // Paramètres de section (Sanity ou valeurs par défaut)
+  const sectionSettings = {
+    badgeText: sectionSettingsData?.badgeText || defaultSectionSettings.badgeText,
+    sectionTitle: sectionSettingsData?.sectionTitle || defaultSectionSettings.sectionTitle,
+  };
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const testimonials = sanityTestimonials && sanityTestimonials.length > 0 
@@ -72,16 +86,13 @@ export const TestimonialsSection = () => {
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-foreground"></div>
-            <span className="text-sm">Climate's rising stars</span>
+            <span className="text-sm">{sectionSettings.badgeText}</span>
           </div>
           
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold max-w-3xl">
-              Meet the climate leaders who trust Patch to help them navigate carbon markets
+              {sectionSettings.sectionTitle}
             </h2>
-            <Button variant="outline" size="lg" className="self-start md:self-end">
-              Meet our customers
-            </Button>
           </div>
         </div>
 
