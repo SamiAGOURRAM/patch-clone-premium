@@ -138,13 +138,14 @@ export const GuideSection = () => {
                   className="cursor-pointer group"
                   onClick={() => handleItemClick(index)}
                 >
-                  {/* Timer Bar */}
+                  {/* Separator Line - Always visible */}
                   <div 
-                    className="h-0.5 mb-4 overflow-hidden rounded-full"
-                    style={{ backgroundColor: `${textColor}33` }}
+                    className="h-px mb-4 relative"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
                   >
+                    {/* Progress indicator */}
                     <div
-                      className="h-full transition-all duration-100 ease-linear"
+                      className="absolute top-0 left-0 h-full transition-all duration-100 ease-linear"
                       style={{
                         width: activeIndex === index ? `${progress}%` : "0%",
                         backgroundColor: textColor,
