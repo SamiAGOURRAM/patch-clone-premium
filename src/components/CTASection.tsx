@@ -4,6 +4,7 @@ import { getCalApi } from "@calcom/embed-react";
 import { useContactInfo } from "@/hooks/useSanity";
 import { useSectionStyles } from "./SectionWrapper";
 import { useContact } from "./ContactModalProvider";
+import Aurora from "./Aurora";
 
 // Valeurs par défaut (fallback)
 const defaultContactInfo = {
@@ -66,9 +67,15 @@ export const CTASection = () => {
           color: textColor,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#165C42]/20 via-transparent to-[#165C42]/20" />
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#165C42]/30 to-transparent" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#165C42]/30 to-transparent" />
+        {/* Aurora Effect Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <Aurora
+            colorStops={["#165C42", "#3A8F6E", "#165C42"]}
+            blend={0.6}
+            amplitude={1.2}
+            speed={0.3}
+          />
+        </div>
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <h2 
