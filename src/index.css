@@ -153,3 +153,8 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Festive mode - no hover effects */
+@layer utilities {
+  /* Festive mode styling - no hover effects */
+}

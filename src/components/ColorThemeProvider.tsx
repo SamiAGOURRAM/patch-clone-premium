@@ -1,17 +1,40 @@
-import { useEffect } from 'react';
-import { useColorSettings } from '@/hooks/useSanity';
+import { useEffect, useMemo } from 'react';
+import { useColorSettings, useSeasonalSettings } from '@/hooks/useSanity';
 
 /**
  * Component that applies color settings from Sanity to CSS variables
  * This allows colors to be changed from Sanity CMS without code changes
+ * Also applies festive accent colors when seasonal settings are enabled
  */
 export const ColorThemeProvider = () => {
   const { data: colorSettings } = useColorSettings();
+  const { data: seasonalSettings } = useSeasonalSettings();
+
+  // Check if we're within the season dates
+  const isWithinSeason = useMemo(() => {
+    if (!seasonalSettings) return false;
+    
+    const now = new Date();
+    
+    if (seasonalSettings.seasonStartDate) {
+      const start = new Date(seasonalSettings.seasonStartDate);
+      if (now < start) return false;
+    }
+    
+    if (seasonalSettings.seasonEndDate) {
+      const end = new Date(seasonalSettings.seasonEndDate);
+      if (now > end) return false;
+    }
+    
+    return true;
+  }, [seasonalSettings]);
+
+  const festiveModeEnabled = seasonalSettings?.christmasAccentEnabled && isWithinSeason;
 
   useEffect(() => {
-    if (!colorSettings) return;
-
     const root = document.documentElement;
+
+    if (!colorSettings) return;
 
     // Global colors
     if (colorSettings.primary) {
@@ -109,7 +132,36 @@ export const ColorThemeProvider = () => {
     if (colorSettings.linkHover) {
       root.style.setProperty('--link-hover', colorSettings.linkHover);
     }
-  }, [colorSettings]);
+
+    // Apply festive accent colors when enabled
+    if (festiveModeEnabled) {
+      // Subtle festive accent colors (red/gold/green palette)
+      root.style.setProperty('--festive-accent', '0 84% 60%'); // Warm red
+      root.style.setProperty('--festive-accent-light', '0 84% 70%'); // Lighter red
+      root.style.setProperty('--festive-gold', '45 100% 55%'); // Rich gold
+      root.style.setProperty('--festive-gold-light', '45 100% 65%'); // Lighter gold
+      root.style.setProperty('--festive-green', '142 52% 25%'); // Forest green for hover backgrounds
+      root.style.setProperty('--festive-green-light', '142 52% 35%'); // Lighter green
+      
+      // Don't override button/nav colors - keep original styling
+      // Only add festive variables for subtle accents via CSS
+      
+      // Add festive class to body for CSS targeting
+      document.body.classList.add('festive-mode');
+    } else {
+      // Remove festive class when disabled
+      document.body.classList.remove('festive-mode');
+      // Clear festive variables
+      root.style.removeProperty('--festive-accent');
+      root.style.removeProperty('--festive-accent-light');
+      root.style.removeProperty('--festive-gold');
+      root.style.removeProperty('--festive-gold-light');
+      root.style.removeProperty('--festive-green');
+      root.style.removeProperty('--festive-green-light');
+      
+      // Colors remain as set by Sanity - no need to restore
+    }
+  }, [colorSettings, festiveModeEnabled]);
 
   return null; // This component doesn't render anything
 };

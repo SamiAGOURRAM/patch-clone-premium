@@ -7,9 +7,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useNavigation, useSiteSettings } from "@/hooks/useSanity";
+import { useNavigation, useSiteSettings, useSeasonalSettings } from "@/hooks/useSanity";
 import { urlFor } from "@/lib/sanity";
 import { useContact } from "./ContactModalProvider";
+import { useMemo } from "react";
 
 // Valeurs par défaut (fallback si Sanity n'est pas configuré)
 const defaultNavigation = {
@@ -60,7 +61,27 @@ const defaultNavigation = {
 export const Navigation = () => {
   const { data: sanityNavigation } = useNavigation();
   const { data: siteSettings } = useSiteSettings();
+  const { data: seasonalSettings } = useSeasonalSettings();
   const { openContactModal } = useContact();
+
+  // Check if we're within the season dates and festive accents are enabled
+  const isFestiveMode = useMemo(() => {
+    if (!seasonalSettings?.christmasAccentEnabled) return false;
+    
+    const now = new Date();
+    
+    if (seasonalSettings.seasonStartDate) {
+      const start = new Date(seasonalSettings.seasonStartDate);
+      if (now < start) return false;
+    }
+    
+    if (seasonalSettings.seasonEndDate) {
+      const end = new Date(seasonalSettings.seasonEndDate);
+      if (now > end) return false;
+    }
+    
+    return true;
+  }, [seasonalSettings]);
 
   // Utiliser les données Sanity ou les valeurs par défaut
   const navigation = {
@@ -182,7 +203,7 @@ export const Navigation = () => {
           <div className="flex items-center gap-3">
             <Button 
               size="lg" 
-              className="font-medium"
+              className="font-medium relative"
               onClick={openContactModal}
               style={{
                 backgroundColor: 'hsl(var(--nav-button))',
@@ -197,6 +218,20 @@ export const Navigation = () => {
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
+              {isFestiveMode && (
+                <img
+                  src="https://assets.codepen.io/4175254/santa-hat-test-9.png"
+                  alt=""
+                  className="absolute pointer-events-none z-10"
+                  style={{
+                    top: '-10px',
+                    right: '-17px',
+                    height: '44px',
+                    transform: 'scaleX(-1) rotate(-15deg)',
+                    filter: 'drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25))',
+                  }}
+                />
+              )}
               {navigation.ctaButtonText}
             </Button>
           </div>

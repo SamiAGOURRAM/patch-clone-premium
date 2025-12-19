@@ -1,19 +1,57 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "./ui/button";
-import { useAnnouncementBanner } from "@/hooks/useSanity";
+import { useAnnouncementBanner, useSeasonalSettings } from "@/hooks/useSanity";
 
 export const AnnouncementBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { data: banner } = useAnnouncementBanner();
+  const { data: seasonalSettings } = useSeasonalSettings();
 
-  // Don't show if disabled in Sanity or manually closed
-  if (!isVisible || !banner?.enabled) return null;
+  // Check if we're within the season dates
+  const isWithinSeason = useMemo(() => {
+    if (!seasonalSettings) return false;
+    
+    const now = new Date();
+    
+    if (seasonalSettings.seasonStartDate) {
+      const start = new Date(seasonalSettings.seasonStartDate);
+      if (now < start) return false;
+    }
+    
+    if (seasonalSettings.seasonEndDate) {
+      const end = new Date(seasonalSettings.seasonEndDate);
+      if (now > end) return false;
+    }
+    
+    return true;
+  }, [seasonalSettings]);
 
-  const backgroundColor = banner.backgroundColor || 'var(--foreground)';
-  const textColor = banner.textColor || 'var(--background)';
-  const badgeBg = banner.badgeBackgroundColor || 'var(--background)';
-  const badgeText = banner.badgeTextColor || 'var(--foreground)';
+  // Priority: Seasonal banner if enabled and in season, otherwise regular banner
+  const useSeasonalBanner = seasonalSettings?.christmasBannerEnabled && isWithinSeason;
+  const showBanner = useSeasonalBanner || (banner?.enabled && !useSeasonalBanner);
+
+  // Don't show if disabled or manually closed
+  if (!isVisible || !showBanner) return null;
+
+  // Seasonal banner styling (festive greenish Christmas colors)
+  const isSeasonal = useSeasonalBanner && seasonalSettings?.christmasBannerText;
+  const backgroundColor = isSeasonal 
+    ? '142 52% 20%' // Rich forest green - traditional Christmas color
+    : banner?.backgroundColor || 'var(--foreground)';
+  const textColor = isSeasonal
+    ? '0 0% 98%' // Off-white text for contrast
+    : banner?.textColor || 'var(--background)';
+  const badgeBg = isSeasonal
+    ? '0 84% 60%' // Warm red accent
+    : banner?.badgeBackgroundColor || 'var(--background)';
+  const badgeText = isSeasonal
+    ? '0 0% 100%' // White text on red
+    : banner?.badgeTextColor || 'var(--foreground)';
+
+  const message = isSeasonal 
+    ? seasonalSettings.christmasBannerText 
+    : banner?.message;
 
   return (
     <div 
@@ -21,11 +59,23 @@ export const AnnouncementBanner = () => {
       style={{
         backgroundColor: `hsl(${backgroundColor})`,
         color: `hsl(${textColor})`,
+        borderBottom: isSeasonal ? '1px solid hsl(142 52% 25%)' : undefined,
       }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-1">
-          {banner.badgeText && (
+          {isSeasonal && (
+            <span 
+              className="text-xs font-semibold px-2.5 py-1 rounded-full"
+              style={{
+                backgroundColor: `hsl(${badgeBg})`,
+                color: `hsl(${badgeText})`,
+              }}
+            >
+              Saison
+            </span>
+          )}
+          {!isSeasonal && banner?.badgeText && (
             <span 
               className="text-xs font-semibold px-2.5 py-1 rounded-full"
               style={{
@@ -37,9 +87,9 @@ export const AnnouncementBanner = () => {
             </span>
           )}
           <p className="text-sm md:text-base">
-            {banner.message}
+            {message}
           </p>
-          {banner.linkText && banner.linkUrl && (
+          {!isSeasonal && banner?.linkText && banner?.linkUrl && (
             <Button 
               variant="link" 
               size="sm"
