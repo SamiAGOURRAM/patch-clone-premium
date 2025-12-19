@@ -297,6 +297,20 @@ export interface SanitySiteSettings {
   contactPhone?: string;
 }
 
+// Interface pour les paramètres saisonniers (Noël, etc.)
+export interface SanitySeasonalSettings {
+  _id: string;
+  snowfallEnabled?: boolean;
+  snowflakeCount?: number;
+  snowflakeColor?: string;
+  snowflakeSpeed?: 'slow' | 'normal' | 'fast';
+  christmasBannerEnabled?: boolean;
+  christmasBannerText?: string;
+  christmasAccentEnabled?: boolean;
+  seasonStartDate?: string;
+  seasonEndDate?: string;
+}
+
 // Queries GROQ pour récupérer le contenu
 export const queries = {
   hero: `*[_type == "heroSection"][0]`,
@@ -326,6 +340,8 @@ export const queries = {
   pageReseau: `*[_id == "pageReseau"][0]`,
   // Site Settings (Logos)
   siteSettings: `*[_id == "siteSettings"][0]`,
+  // Seasonal Settings (Christmas, etc.)
+  seasonalSettings: `*[_id == "seasonalSettings"][0]`,
 };
 
 // Fonctions pour récupérer le contenu
@@ -466,4 +482,9 @@ export async function getPageReseau(): Promise<SanityPageReseau | null> {
 // Fonction pour récupérer les paramètres du site (logos)
 export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
   return sanityClient.fetch(queries.siteSettings);
+}
+
+// Fonction pour récupérer les paramètres saisonniers
+export async function getSeasonalSettings(): Promise<SanitySeasonalSettings | null> {
+  return sanityClient.fetch(queries.seasonalSettings);
 }

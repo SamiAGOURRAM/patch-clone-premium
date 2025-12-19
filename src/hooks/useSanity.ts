@@ -25,6 +25,7 @@ import {
   getPageAme,
   getPageReseau,
   getSiteSettings,
+  getSeasonalSettings,
   type SanityHeroContent,
   type SanityStat,
   type SanityTestimonial,
@@ -47,6 +48,7 @@ import {
   type SanityPageAme,
   type SanityPageReseau,
   type SanitySiteSettings,
+  type SanitySeasonalSettings,
 } from '@/lib/sanity';
 
 // Hook pour récupérer le contenu du Hero
@@ -280,6 +282,15 @@ export function useSiteSettings() {
   return useQuery<SanitySiteSettings | null>({
     queryKey: ['siteSettings'],
     queryFn: getSiteSettings,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+// Hook pour récupérer les paramètres saisonniers (Noël, neige, etc.)
+export function useSeasonalSettings() {
+  return useQuery<SanitySeasonalSettings | null>({
+    queryKey: ['seasonalSettings'],
+    queryFn: getSeasonalSettings,
     staleTime: 1000 * 60 * 5,
   });
 }

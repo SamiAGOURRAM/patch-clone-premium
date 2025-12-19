@@ -22,6 +22,16 @@ export const deskStructure = (S: StructureBuilder) =>
             .title('Logos & Paramètres')
         ),
 
+      // === PARAMÈTRES SAISONNIERS ===
+      S.listItem()
+        .title('🎄 Effets Saisonniers')
+        .child(
+          S.document()
+            .schemaType('seasonalSettings')
+            .documentId('seasonalSettings')
+            .title('Neige & Décorations de Noël')
+        ),
+
       S.divider(),
 
       // === CONTENU PRINCIPAL ===

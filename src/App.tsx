@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ColorThemeProvider } from "@/components/ColorThemeProvider";
 import { ContactModalProvider } from "@/components/ContactModalProvider";
+import { ChristmasEffects } from "@/components/ChristmasEffects";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -19,6 +20,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ColorThemeProvider />
+    <ChristmasEffects />
     <TooltipProvider>
       <ContactModalProvider>
         <Toaster />

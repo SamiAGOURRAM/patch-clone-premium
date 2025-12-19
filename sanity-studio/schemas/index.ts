@@ -20,6 +20,7 @@ import pageMethode from './pageMethode'
 import pageAme from './pageAme'
 import pageReseau from './pageReseau'
 import siteSettings from './siteSettings'
+import seasonalSettings from './seasonalSettings'
 
 export const schemaTypes = [
   heroSection,
@@ -44,4 +45,5 @@ export const schemaTypes = [
   pageAme,
   pageReseau,
   siteSettings,
+  seasonalSettings,
 ]
