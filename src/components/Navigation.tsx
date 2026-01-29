@@ -102,13 +102,14 @@ export const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             {siteSettings?.headerLogo ? (
-              <img 
-                src={urlFor(siteSettings.headerLogo).height(40).url()} 
+              <img
+                src={urlFor(siteSettings.headerLogo).height(96).auto('format').fit('max').url()}
                 alt={navigation.logoText}
-                className="h-10 w-auto"
+                className="h-12 w-auto object-contain"
+                style={{ imageRendering: 'auto' }}
               />
             ) : (
-              <span 
+              <span
                 className="text-2xl font-bold tracking-wide"
                 style={{ color: 'hsl(var(--nav-text))' }}
               >
