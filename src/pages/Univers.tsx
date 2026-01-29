@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
+import { PageCTASection } from "@/components/PageCTASection";
 import { 
   ArrowLeft, 
   Building2, 
@@ -66,7 +66,6 @@ import {
   Presentation,
   FileImage,
 } from "lucide-react";
-import { useContact } from "@/components/ContactModalProvider";
 import { usePageUnivers } from "@/hooks/useSanity";
 
 // Icon mapping for Sanity - comprehensive list
@@ -184,7 +183,6 @@ const defaultContent = {
 };
 
 export default function Univers() {
-  const { openContactModal } = useContact();
   const { data: pageData } = usePageUnivers();
 
   // Use Sanity data or defaults
@@ -270,23 +268,11 @@ export default function Univers() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-muted/30">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            {ctaTitle}
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            {ctaSubtitle}
-          </p>
-          <Button 
-            size="lg" 
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-            onClick={openContactModal}
-          >
-            {ctaButtonText}
-          </Button>
-        </div>
-      </section>
+      <PageCTASection
+        title={ctaTitle}
+        subtitle={ctaSubtitle}
+        buttonText={ctaButtonText}
+      />
 
       <Footer />
     </div>

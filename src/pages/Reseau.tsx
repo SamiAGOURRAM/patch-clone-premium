@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
+import { PageCTASection } from "@/components/PageCTASection";
 import { ArrowLeft, MapPin, Users, Building, Handshake, Star, Target } from "lucide-react";
-import { useContact } from "@/components/ContactModalProvider";
 import { usePageReseau } from "@/hooks/useSanity";
 
 // Icon mapping for Sanity
@@ -53,7 +52,6 @@ const defaultContent = {
 };
 
 export default function Reseau() {
-  const { openContactModal } = useContact();
   const { data: pageData } = usePageReseau();
 
   // Use Sanity data or defaults
@@ -69,7 +67,6 @@ export default function Reseau() {
   const joinCtaTitle = pageData?.joinCtaTitle || defaultContent.joinCtaTitle;
   const joinCtaSubtitle = pageData?.joinCtaSubtitle || defaultContent.joinCtaSubtitle;
   const joinCtaButtonText = pageData?.joinCtaButtonText || defaultContent.joinCtaButtonText;
-  const contactButtonText = pageData?.contactButtonText || defaultContent.contactButtonText;
   
   return (
     <div className="min-h-screen bg-background">
@@ -157,32 +154,11 @@ export default function Reseau() {
       </section>
 
       {/* Join Network CTA */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            {joinCtaTitle}
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            {joinCtaSubtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              onClick={openContactModal}
-            >
-              {joinCtaButtonText}
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              onClick={openContactModal}
-            >
-              {contactButtonText}
-            </Button>
-          </div>
-        </div>
-      </section>
+      <PageCTASection
+        title={joinCtaTitle}
+        subtitle={joinCtaSubtitle}
+        buttonText={joinCtaButtonText}
+      />
 
       <Footer />
     </div>
