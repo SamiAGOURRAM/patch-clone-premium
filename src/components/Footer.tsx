@@ -30,9 +30,9 @@ export const Footer = () => {
             <Link to="/" className="flex items-center gap-3">
               {siteSettings?.footerLogo ? (
                 <img
-                  src={urlFor(siteSettings.footerLogo).height(96).auto('format').fit('max').url()}
+                  src={urlFor(siteSettings.footerLogo).height(160).auto('format').fit('max').url()}
                   alt={siteName}
-                  className="h-12 w-auto object-contain"
+                  className="h-16 w-auto object-contain"
                   style={{ imageRendering: 'auto' }}
                 />
               ) : (
