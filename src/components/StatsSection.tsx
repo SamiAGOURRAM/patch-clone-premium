@@ -1,5 +1,6 @@
 import { useStats, useStatsSectionSettings } from "@/hooks/useSanity";
 import { useSectionStyles } from "./SectionWrapper";
+import { useNavigate } from "react-router-dom";
 
 // Valeurs par défaut pour les paramètres de section
 const defaultSectionSettings = {
@@ -15,24 +16,28 @@ const defaultStats = [
     label: "Projets réalisés",
     colorFrom: "success",
     colorTo: "primary",
+    link: "/#testimonials",
   },
   {
     value: "4",
     label: "Univers d'expertise",
     colorFrom: "primary",
     colorTo: "tertiary",
+    link: "/univers",
   },
   {
     value: "100+",
     label: "Partenaires du réseau",
     colorFrom: "tertiary",
     colorTo: "secondary",
+    link: "/reseau",
   },
   {
     value: "15+",
     label: "Villes & régions",
     colorFrom: "secondary",
     colorTo: "success",
+    link: "/reseau",
   },
 ];
 
@@ -49,14 +54,33 @@ export const StatsSection = () => {
   };
   
   // Utiliser les données Sanity ou les valeurs par défaut
-  const stats = sanityStats && sanityStats.length > 0 
+  const stats = sanityStats && sanityStats.length > 0
     ? sanityStats.map(s => ({
         value: s.value,
         label: s.label,
         colorFrom: s.colorFrom || "primary",
         colorTo: s.colorTo || "secondary",
+        link: s.link || undefined,
       }))
     : defaultStats;
+
+  const navigate = useNavigate();
+
+  const handleStatClick = (link?: string) => {
+    if (!link) return;
+
+    // Handle hash links (scroll to section on same page)
+    if (link.startsWith('/#')) {
+      const elementId = link.substring(2);
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Navigate to different page
+      navigate(link);
+    }
+  };
 
   // Use Sanity color if set, otherwise use muted/30 like testimonials
   const hasCustomBackground = !!sectionStyle.backgroundColor;
@@ -106,15 +130,26 @@ export const StatsSection = () => {
             const fromColor = colorMap[stat.colorFrom] || colorMap.primary;
             const toColor = colorMap[stat.colorTo] || colorMap.secondary;
             
+            const isClickable = !!stat.link;
+
             return (
               <div
                 key={stat.label}
-                className="text-center animate-fade-in group"
+                className={`text-center animate-fade-in group ${isClickable ? 'cursor-pointer' : ''}`}
                 style={{ animationDelay: `${index * 0.15}s` }}
+                onClick={() => handleStatClick(stat.link)}
+                role={isClickable ? 'button' : undefined}
+                tabIndex={isClickable ? 0 : undefined}
+                onKeyDown={(e) => {
+                  if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
+                    e.preventDefault();
+                    handleStatClick(stat.link);
+                  }
+                }}
               >
-                <div 
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 bg-clip-text text-transparent transition-all duration-500 group-hover:scale-110"
-                  style={{ 
+                <div
+                  className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-3 bg-clip-text text-transparent transition-all duration-500 group-hover:scale-110 ${isClickable ? 'group-hover:drop-shadow-lg' : ''}`}
+                  style={{
                     backgroundImage: `linear-gradient(to right, ${fromColor}, ${toColor})`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -122,8 +157,8 @@ export const StatsSection = () => {
                 >
                   {stat.value}
                 </div>
-                <div 
-                  className="text-sm md:text-base font-medium"
+                <div
+                  className={`text-sm md:text-base font-medium transition-colors ${isClickable ? 'group-hover:text-primary' : ''}`}
                   style={{ color: textColor }}
                 >
                   {stat.label}

@@ -54,6 +54,12 @@ export default defineType({
       description: 'Position dans la liste (1, 2, 3...)',
       validation: (Rule) => Rule.required().integer().positive(),
     }),
+    defineField({
+      name: 'link',
+      title: 'Lien',
+      type: 'string',
+      description: 'URL de destination au clic (ex: "/univers", "/reseau", "/#testimonials")',
+    }),
   ],
   orderings: [
     {

@@ -36,6 +36,7 @@ export interface SanityStat {
   colorFrom: string;
   colorTo: string;
   order: number;
+  link?: string;
 }
 
 export interface SanityTestimonial {

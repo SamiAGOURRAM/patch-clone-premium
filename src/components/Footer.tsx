@@ -29,10 +29,11 @@ export const Footer = () => {
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-3">
               {siteSettings?.footerLogo ? (
-                <img 
-                  src={urlFor(siteSettings.footerLogo).height(40).url()} 
+                <img
+                  src={urlFor(siteSettings.footerLogo).height(96).auto('format').fit('max').url()}
                   alt={siteName}
-                  className="h-10 w-auto"
+                  className="h-12 w-auto object-contain"
+                  style={{ imageRendering: 'auto' }}
                 />
               ) : (
                 <div className="flex items-center gap-2">

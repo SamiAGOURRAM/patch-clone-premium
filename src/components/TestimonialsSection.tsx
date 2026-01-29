@@ -77,7 +77,8 @@ export const TestimonialsSection = () => {
   const partnerLogos = sanityPartnerLogos?.logos || defaultPartnerLogos;
 
   return (
-    <section 
+    <section
+      id="testimonials"
       className="py-16 px-4"
       style={sectionStyle}
     >
