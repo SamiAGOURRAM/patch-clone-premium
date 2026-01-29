@@ -157,6 +157,24 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'visionTitle',
+      title: 'Vision - Titre',
+      type: 'string',
+      initialValue: 'Notre Vision',
+    }),
+    defineField({
+      name: 'visionSubtitle',
+      title: 'Vision - Sous-titre',
+      type: 'string',
+      initialValue: 'Ce vers quoi nous tendons',
+    }),
+    defineField({
+      name: 'visionContent',
+      title: 'Vision - Contenu',
+      type: 'text',
+      rows: 6,
+    }),
+    defineField({
       name: 'ctaTitle',
       title: 'CTA - Titre',
       type: 'string',

@@ -105,32 +105,30 @@ export const TestimonialsSection = () => {
           <CarouselContent className="-ml-4">
             {testimonials.map((testimonial, index) => (
               <CarouselItem key={index} className="pl-4 md:basis-[85%] lg:basis-[48%]">
-                <div className="h-full flex flex-col">
-                  <div className="flex-1 flex flex-col lg:flex-row gap-4">
-                    {/* Quote Section */}
-                    <div className="flex-1 flex flex-col justify-between bg-muted/30 p-6 rounded-2xl">
-                      <div>
-                        <div className="mb-4">
-                          <span className="text-sm font-semibold tracking-wider">{testimonial.company}</span>
-                        </div>
-                        <p className="text-lg md:text-xl mb-6 leading-relaxed">
-                          {testimonial.quote}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">{testimonial.personName}</p>
-                        <p className="text-sm text-muted-foreground">{testimonial.personTitle}</p>
-                      </div>
+                <div className="h-[320px] flex flex-col lg:flex-row gap-4 bg-muted/30 rounded-2xl overflow-hidden">
+                  {/* Quote Section */}
+                  <div className="flex-1 flex flex-col p-6 min-w-0">
+                    <div className="mb-3">
+                      <span className="text-sm font-semibold tracking-wider text-primary">{testimonial.company}</span>
                     </div>
-                    
-                    {/* Image Section */}
-                    <div className="lg:w-64 h-56 lg:h-auto">
-                      <img 
-                        src={testimonial.personImage} 
-                        alt={testimonial.personName}
-                        className="w-full h-full object-cover rounded-2xl"
-                      />
+                    <div className="flex-1 overflow-y-auto pr-2 mb-4 scrollbar-thin">
+                      <p className="text-base leading-relaxed">
+                        {testimonial.quote}
+                      </p>
                     </div>
+                    <div className="pt-3 border-t border-border/50">
+                      <p className="font-semibold text-sm">{testimonial.personName}</p>
+                      <p className="text-xs text-muted-foreground">{testimonial.personTitle}</p>
+                    </div>
+                  </div>
+
+                  {/* Image Section - Fixed size */}
+                  <div className="hidden lg:block w-52 flex-shrink-0">
+                    <img
+                      src={testimonial.personImage}
+                      alt={testimonial.personName}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
               </CarouselItem>

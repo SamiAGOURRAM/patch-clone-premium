@@ -14,6 +14,64 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'sectionSubtitle',
+      title: 'Sous-titre de la Section',
+      type: 'text',
+      rows: 3,
+      description: 'Description courte sous le titre principal',
+    }),
+    defineField({
+      name: 'features',
+      title: 'Caractéristiques',
+      type: 'array',
+      description: 'Liste des caractéristiques/points forts à afficher',
+      of: [
+        {
+          type: 'object',
+          name: 'feature',
+          title: 'Caractéristique',
+          fields: [
+            {
+              name: 'title',
+              title: 'Titre',
+              type: 'string',
+              validation: (Rule: any) => Rule.required(),
+            },
+            {
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              rows: 2,
+            },
+            {
+              name: 'icon',
+              title: 'Icône',
+              type: 'string',
+              description: 'Nom de l\'icône Lucide (ex: Users, Handshake, Target)',
+              options: {
+                list: [
+                  {title: 'Users', value: 'Users'},
+                  {title: 'Handshake', value: 'Handshake'},
+                  {title: 'Target', value: 'Target'},
+                  {title: 'Heart', value: 'Heart'},
+                  {title: 'Star', value: 'Star'},
+                  {title: 'Lightbulb', value: 'Lightbulb'},
+                  {title: 'Shield', value: 'Shield'},
+                  {title: 'Zap', value: 'Zap'},
+                ],
+              },
+            },
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              subtitle: 'description',
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'viewMoreText',
       title: 'Texte "Voir Plus"',
       type: 'string',

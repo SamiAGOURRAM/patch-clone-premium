@@ -170,6 +170,13 @@ export default defineType({
       group: 'meta',
       description: 'Estimation du temps de lecture',
     }),
+    defineField({
+      name: 'readTime',
+      title: 'Temps de Lecture (texte)',
+      type: 'string',
+      group: 'meta',
+      description: 'Temps de lecture affiché (ex: "5 min read")',
+    }),
 
     // Display Group
     defineField({

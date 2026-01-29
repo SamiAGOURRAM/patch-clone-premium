@@ -19,12 +19,14 @@ export default defineType({
       of: [
         {
           type: 'object',
+          name: 'menuItem',
+          title: 'Élément de Menu',
           fields: [
             {
               name: 'label',
               title: 'Libellé',
               type: 'string',
-              validation: (Rule) => Rule.required(),
+              validation: (Rule: any) => Rule.required(),
             },
             {
               name: 'href',
@@ -38,18 +40,20 @@ export default defineType({
               of: [
                 {
                   type: 'object',
+                  name: 'subMenuItem',
+                  title: 'Sous-élément',
                   fields: [
                     {
                       name: 'label',
                       title: 'Libellé',
                       type: 'string',
-                      validation: (Rule) => Rule.required(),
+                      validation: (Rule: any) => Rule.required(),
                     },
                     {
                       name: 'href',
                       title: 'Lien',
                       type: 'string',
-                      validation: (Rule) => Rule.required(),
+                      validation: (Rule: any) => Rule.required(),
                     },
                   ],
                 },

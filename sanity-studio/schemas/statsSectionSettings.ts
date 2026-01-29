@@ -25,6 +25,53 @@ export default defineType({
       rows: 2,
       description: 'Description courte sous le titre (optionnel)',
     }),
+    defineField({
+      name: 'stats',
+      title: 'Statistiques',
+      type: 'array',
+      description: 'Liste des statistiques à afficher dans cette section',
+      of: [
+        {
+          type: 'object',
+          name: 'statItem',
+          title: 'Statistique',
+          fields: [
+            {
+              name: 'value',
+              title: 'Valeur',
+              type: 'string',
+              description: 'Valeur affichée (ex: "85%", "60%")',
+              validation: (Rule: any) => Rule.required(),
+            },
+            {
+              name: 'label',
+              title: 'Libellé',
+              type: 'string',
+              description: 'Description de la statistique',
+              validation: (Rule: any) => Rule.required(),
+            },
+            {
+              name: 'suffix',
+              title: 'Suffixe',
+              type: 'string',
+              description: 'Suffixe optionnel (ex: "+", "%")',
+            },
+          ],
+          preview: {
+            select: {
+              title: 'value',
+              subtitle: 'label',
+            },
+            prepare(selection: {title?: string; subtitle?: string}) {
+              return {
+                title: selection.title || 'Statistique',
+                subtitle: selection.subtitle || '',
+              }
+            },
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     prepare() {
